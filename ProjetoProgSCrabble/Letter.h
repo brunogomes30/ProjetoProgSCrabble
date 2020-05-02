@@ -6,15 +6,18 @@
 #include<string>
 #include<vector>
 #include<iostream>
+class Word;
 using namespace std;
 class Letter {
-	public:	vector<Word> includedIn;
+	public:	vector<Word*> includedIn;
 			int yPos;
 			int xPos;
 			char value;
 			bool isFilled = false;
 			bool isAvailable;
-
+			Letter();
 			Letter(char value, int yPos, int xPos);
+			bool equals(Letter letter);
+			bool equals(Letter *letter);
 };
 #endif

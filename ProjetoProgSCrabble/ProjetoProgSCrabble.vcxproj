@@ -153,14 +153,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="common.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Letter.cpp" />
-    <ClCompile Include="ProjetoProgSCrabble.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Pool.cpp" />
     <ClCompile Include="Word.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Letter.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Pool.h" />
     <ClInclude Include="Word.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -24,6 +24,10 @@ private:void askForPlayers();
 		void showPlayersInfo();
 		bool checkIfHasAvailableMove(Player player);
 		void fillPool();
-		bool switchLettersFromPlayer(char c);
+		bool switchLettersFromPlayer(char c1, char c2);
+		bool switchLetterFromPlayer(char c);
+		bool checkEndCondition();
+		void endGame();
+		vector<char> getLettersAvailable();
 };
 #endif

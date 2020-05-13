@@ -9,18 +9,22 @@
 #include<iostream>
 using namespace std;
 class Game {
-public:	int numPlayers;
-		bool isGameFinished;
-		Pool gamePool;
-		Board board;
-		vector<Player> players;
-		int currentPlayer;
+public:	
 		Game(string pathToBoard, int numPlayers);
 		void showBoardLabels();
 		void playGame();
 		bool playTile(int y, int x);
 
-private:void askForPlayers();
+private:
+		
+		int numPlayers;
+		bool isGameFinished;
+		Pool gamePool;
+		Board board;
+		vector<Player> players;
+		int currentPlayer;
+	
+		void askForPlayers();
 		void showPlayersInfo();
 		bool checkIfHasAvailableMove(Player player);
 		bool checkIfPlayerHasLetter(char c);

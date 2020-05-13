@@ -10,6 +10,17 @@ Player::Player(string name) {
 	this->points = 0;
 }
 
+void Player::addLetter(char c) {
+	letters.push_back(c);
+}
+void Player::removeLetter(int index) {
+	letters.erase(letters.begin() + index);
+}
+void Player::replaceLetter(char c, int index) {
+	letters.erase(letters.begin() + index);
+	if(c != '\0') letters.insert(letters.begin() + index, c);
+}
+
 int Player::getLetterIndex(char c, int nth) {
 
 	int indexOfChar = -1;
@@ -22,4 +33,24 @@ int Player::getLetterIndex(char c, int nth) {
 			nth--;
 	}
 	return indexOfChar;
+}
+
+//Getters and setters
+string Player::getName() {
+	return name;
+}
+void Player::setName(string name) {
+	this->name = name;
+}
+int Player::getPoints() {
+	return points;
+}
+void Player::setPoints(int points) {
+	this->points = points;
+}
+vector<char> Player::getLetters() {
+	return letters;
+}
+void Player::setLetters(vector<char> letters) {
+	this->letters = letters;
 }

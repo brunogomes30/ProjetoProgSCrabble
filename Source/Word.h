@@ -9,15 +9,31 @@ using namespace std;
 class Letter;
 class Word {
 
-public:	string value;
+public:	
+		vector<Letter*> letters;
+		Word();
+		void calculateIndexToPlay();
+		Word(string str, int y, int x, bool isHorizontal);
+
+		//getters and setters
+		bool getIsHorizontal();
+		void setIsHorizontal(bool isHorizontal);
+		int getXPos();
+		void setXPos(int xPos);
+		int getYPos();
+		void setYPos(int yPos);
+		string getValue();
+		void setValue(string value);
+		int getLettersRemaining();
+		void setLettersRemaining(int lettersRemaining);
+		int getIndexToPlay();
+		void setIndexToPlay();
+private:
+		string value;
 		bool isHorizontal;
 		int xPos;
 		int yPos;
 		int indexToPlay;
 		int lettersRemaining;
-		vector<Letter*> letters;
-		Word();
-		void calculateIndexToPlay();
-		Word(string str, int y, int x, bool isHorizontal);
 };
 #endif

@@ -9,12 +9,17 @@ using namespace std;
 
 class Pool {
 public:
-	vector<char> allLetters;
-	void addWord(Word word);
-	char removeRandomLetter();
-	void addChar(char c);
-	Pool();
-	Pool(vector<Word> words);
+		void addWord(Word word);
+		char removeRandomLetter();
+		void addChar(char c);
+		bool canRemoveLetter();
+		Pool();
+		Pool(vector<Word> words);
+
+		//getters and setters
+		vector<char> getAllLetters();
+private:	
+		vector<char> allLetters;
 };
 
 #endif

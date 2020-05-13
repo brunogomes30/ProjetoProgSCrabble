@@ -24,3 +24,35 @@ bool Letter::equals(Letter letter) {
 bool Letter::equals(Letter *letter) {
 	return letter->value == value && letter->yPos == yPos && letter->xPos == xPos;
 }
+
+//Getters and setters
+vector<Word*> Letter::getIncludedIn() {
+	return includedIn;
+}
+void Letter::setIncludedIn(vector<Word*> includedIn) {
+	this->includedIn = includedIn;
+}
+char Letter::getValue() {
+	return value;
+}
+void Letter::setValue(char value) {
+	this->value = value;
+}
+bool Letter::getIsFilled() {
+	return isFilled;
+}
+void Letter::setIsFilled(bool isFilled) {
+	this->isFilled = isFilled;
+}
+bool Letter::getIsAvailable() {
+	return isAvailable;
+}
+void Letter::setIsAvailable(bool isAvailable) {
+	this->isAvailable = isAvailable;
+}
+bool Letter::getCanPlay() {
+	return canPlay;
+}
+void Letter::setCanPlay(bool canPlay) {
+	this->canPlay = canPlay;
+}

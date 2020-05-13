@@ -66,7 +66,7 @@ string chooseBoard() {
 		clearCin();
 	} while (n < 1 && n > availableFiles.size());
 
-	string boardPath = currentPath + "\\Boards\\" + availableFiles[i - 1];
+	string boardPath = currentPath + "\\Boards\\" + availableFiles[n - 1];
 	Board board = Board(boardPath);
 	clear();
 	cout << "Board preview:" << endl;

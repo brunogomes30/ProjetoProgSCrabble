@@ -34,9 +34,48 @@ Word::Word(string str, int y, int x, bool isHorizontal) {
 
 void Word::calculateIndexToPlay() {
 	for (int i = indexToPlay; i < value.length(); i++) {
-		if (!letters[i]->isFilled)
+		if (!letters[i]->getIsFilled())
 			break;
 		if(indexToPlay < value.length()) 
 			indexToPlay++;	
 	}
+}
+
+//Getters and setters
+
+bool Word::getIsHorizontal() {
+	return isHorizontal;
+}
+void Word::setIsHorizontal(bool isHorizontal) {
+	this->isHorizontal = isHorizontal;
+}
+int Word::getXPos() {
+	return xPos;
+}
+void Word::setXPos(int xPos) {
+	this->xPos = xPos;
+}
+int Word::getYPos() {
+	return yPos;
+}
+void Word::setYPos(int yPos) {
+	this->yPos = yPos;
+}
+string Word::getValue() {
+	return value;
+}
+void Word::setValue(string value) {
+	this->value = value;
+}
+int Word::getLettersRemaining() {
+	return lettersRemaining;
+}
+void Word::setLettersRemaining(int lettersRemaining) {
+	this->lettersRemaining = lettersRemaining;
+}
+int Word::getIndexToPlay() {
+	return indexToPlay;
+}
+void Word::setIndexToPlay() {
+	this->indexToPlay = indexToPlay;
 }

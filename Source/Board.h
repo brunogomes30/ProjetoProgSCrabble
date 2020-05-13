@@ -11,19 +11,28 @@
 using namespace std;
 
 class Board {
-public:		int sizeY;
-			int sizeX;
-			vector<vector<Letter*>> field;
-			map<string, Word> words;
-			map<int, Letter> lettersMap;
-			
+public:		
 			bool readBoardFromFile(string path);
 			void printBoard();
 			Board();
 			Board(string path);
 			bool fillTile(int y, int x, Player &player);
+			
+			//getters and setters
+			int getSizeY();
+			void setSizeY(int sizeY);
+			int getSizeX();
+			void setSizeX(int sizeX);
+			vector<vector<Letter*>> getField();
+			void setField(vector<vector<Letter*>> field);
 
-private:	void reset_board(int sizeY, int sizeX);
+private:	
+			vector<vector<Letter*>> field;
+			map<string, Word> words;
+			map<int, Letter> lettersMap;
+			int sizeY;
+			int sizeX;
+			void reset_board(int sizeY, int sizeX);
 			void fillMaps();
 			/*
 			 *	Returns true if successful

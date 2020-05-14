@@ -25,6 +25,10 @@ bool Letter::equals(Letter *letter) {
 	return letter->value == value && letter->yPos == yPos && letter->xPos == xPos;
 }
 
+void Letter::addWord(Word *word) {
+	includedIn.push_back(word);
+}
+
 //Getters and setters
 vector<Word*> Letter::getIncludedIn() {
 	return includedIn;

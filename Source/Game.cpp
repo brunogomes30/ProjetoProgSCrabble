@@ -174,7 +174,7 @@ void Game::endGame() {
 		[](Player const & a, Player const & b) -> bool
 		{ return a.getPoints() < b.getPoints(); });*/
 	cout << "Points:\n";
-	for (int i = 1; i <= players.size(); i++) {
+	for (size_t i = 1; i <= players.size(); i++) {
 		cout << i << " - " << players[i - 1].getName() << " - " << players[i - 1].getPoints() << " points.";
 	}
 	isGameFinished = true;
@@ -191,14 +191,14 @@ void Game::playGame() {
 	while (!isGameFinished) {
 		int playNum = 1;
 		do {
-			clear();
 			bool canPlay = checkIfHasAvailableMove(players[currentPlayer]);
-
 			changeCanPlay();
+
+			//Print information
+			clear();
 			showPlayersInfo();
 			board.printBoard();
 			showBoardLabels();
-
 			if (checkEndCondition()) {
 				endGame();
 				break;
@@ -215,7 +215,6 @@ void Game::playGame() {
 					else cout << "Second position to play: ";
 					cin >> position;
 					clearCin();
-					//TODO :: Check if position is valid
 					validInput = checkPosition(position);
 				} while (!validInput);
 
@@ -252,12 +251,10 @@ void Game::playGame() {
 						else break;
 					}
 				}
-				break;
+				playNum = 1;
 			}
-			else 
-				//Skip turn
+			else //Skip turn
 				break;
-
 		} while (playNum <= 2);
 		for (int i = 1;i < playNum;i++) // adds the same amount for letters that were played
 			addRandomLetterToPlayer();

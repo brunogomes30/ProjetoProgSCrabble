@@ -3,7 +3,7 @@
 #include "common.h"
 #include <iostream>
 #include <filesystem>
-
+#include <sstream>
 
 /*
  * Play game
@@ -51,27 +51,48 @@ string chooseBoard() {
 	string currentPath = fs::current_path().string();
 	string path = currentPath + "\\Boards";
 
+	//Prints all available boards
 	cout << "Available Boards:" << endl;
 	vector<string> availableFiles;
 	int i = 0;
 	for (const auto & entry : fs::directory_iterator(path)) {
-		availableFiles.push_back(getFileFromPath(entry.path().string()));
-		std::cout << "\t" << ++i << " - " << getFileFromPath(entry.path().string()) << endl;
+		string filePath = entry.path().string();
+
+		// Checks if file is in a correct format for the board
+		if (Board().readBoardFromFile(filePath)) { 
+			availableFiles.push_back(getFileFromPath(filePath));
+			std::cout << "\t" << ++i << " - " << getFileFromPath(filePath) << endl;
+		}
 	}
 	cout << endl;
+	
+	string answer, boardPath;
 	int n;
 	do {
-		cout << "Choose a file(By number)\nNumber-> ";
-		cin >> n;
+		cout << "Choose a file( Insert number or full path)" << endl;
+		cin.clear();
+		getline(cin, answer); //Use getline because path can have spaces
+		if (answer.find("\\") == -1) {
+			//Input is a number
+			stringstream ss = stringstream(answer);
+			ss >> n;
+		}
+		else {
+			//Input is full path, so n should be ignored
+			n = -1;
+			break;
+		}
 		clearCin();
-	} while (n < 1 && n > availableFiles.size());
+	} while (n < 1 && n > (int) availableFiles.size());
 
-	string boardPath = currentPath + "\\Boards\\" + availableFiles[n - 1];
+	if(n != -1) boardPath = currentPath + "\\Boards\\" + availableFiles[n - 1]; // Answer is a number
+	else boardPath = answer;													// Answer is the full path
+
 	Board board = Board(boardPath);
 	clear();
 	cout << "Board preview:" << endl;
 	board.printBoard();
-	string answer;
+	
 	do {
 		cout << "Select board?(y or n)" << endl;
 		cout << "Answer -> ";
@@ -84,5 +105,6 @@ string chooseBoard() {
 			return chooseBoard();
 
 	} while (answer != "y" || answer != "Y" || answer != "n" || answer != "N");
+	return "";
 }
 

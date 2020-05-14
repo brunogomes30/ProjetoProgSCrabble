@@ -27,3 +27,4 @@ bool checkPosition(string s) {
 	return 'A' <= s.at(0) && s.at(0) <= 'Z' && 'a' <= s.at(1) && s.at(1) <= 'z';
 }
 
+

@@ -14,7 +14,7 @@ class Letter {
 			Letter(char value, int yPos, int xPos);
 			bool equals(Letter letter);
 			bool equals(Letter *letter);
-
+			void addWord(Word *word);
 			//Getters and setters
 			vector<Word*> getIncludedIn();
 			void setIncludedIn(vector<Word*> includedIn);

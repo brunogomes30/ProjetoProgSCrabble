@@ -12,10 +12,30 @@ using namespace std;
 
 class Board {
 public:		
+
+			/* 
+			 * Reads board from file, initializes the board
+			 */
 			bool readBoardFromFile(string path);
+			
+			/*
+			 * Prints board with all the information(If tile can be play, if it's filled, etc...)
+			 */
 			void printBoard();
+			
+			/*
+		     * Default constructor, does nothing 
+			 */
 			Board();
+			
+			/*
+			 * Constructor that calls readBoardFromFile
+			 */
 			Board(string path);
+			
+			/* 
+			 * Function to call to play a tile, returns false if it can't be played
+			 */
 			bool fillTile(int y, int x, Player &player);
 			
 			//getters and setters
@@ -28,11 +48,19 @@ public:
 
 private:	
 			vector<vector<Letter*>> field;
-			map<string, Word> words;
+			map<int, Word> words;
 			map<int, Letter> lettersMap;
 			int sizeY;
 			int sizeX;
+
+			/*
+			 * resets the board, filling all the tiles with empty letters
+			 */
 			void reset_board(int sizeY, int sizeX);
+
+			/*
+			 * Updates the maps
+			 */
 			void fillMaps();
 			/*
 			 *	Returns true if successful

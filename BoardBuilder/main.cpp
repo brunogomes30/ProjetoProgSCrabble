@@ -9,24 +9,27 @@
 
 using namespace std;
 
+vector<string> dictionary;
+vector<string> words;
+vector<string> directions;
+vector<string> posicions;
+bool stop = false;
+Board newboard;
+
 int main()
 {
-    vector<string> dictionary;
-    vector<string> words;
-    vector<string> directions;
-    vector<string> posicions;
-    bool stop == false;
-    Board newboard;
-    dictFill("WORDS.txt")
+    dictFill("WORDS.txt");
     boardSize();
     while (stop == false)
     {
-        string newWord = getWordOrEnd();
-        string orientation = getOrientation();
-        string position = getPos();
-        if (testWord(newboard, newWord, orientation, position))
+        Word newWord;
+        newWord.setValue(getWordOrEnd());
+        newWord.setIsHorizontal(getOrientation());
+        setPos();
+        if (wordIsValid(newboard, newWord))
         {
-            //guarda
+            newboard.insertWord(newWord);
+            saveword();
         }
         else
         {
@@ -36,7 +39,25 @@ int main()
     exportBoard();
 }
 
-cleanCinStr()
+bool wordIsValid(Board aboard, Word aword)
+{
+    //dafsgdh
+}
+void invalidWord()
+{
+    cout << "cycka blyat";
+}
+void setPos()
+{
+    cout << ""; //
+}
+
+void saveword()
+{
+    //guarda nos vetores
+}
+
+void clearCinStr()
 {
     clearCin();
     cout << "please insert a string";
@@ -45,29 +66,29 @@ cleanCinStr()
 string getWordOrEnd()
 {
     string aWord;
-    cout << "insert a word you wish to put on the board or \"stopbuilding\" if you wish to terminate the board creation, ";
+    cout << "Insert a word you would want to put on the board or type \"stopbuilding\" if you want to terminate the board creation, ";
     cin >> aWord;
     if (aWord == "stopbuilding")
     {
         stop == true;
     }
-    while (cin.fail() || !binarySearch(dictionary, newWord))
+    while (cin.fail() || !binarySearch(dictionary, aWord))
     {
         if (cin.fail());
         {
             clearCinStr();
             cin >> aWord;
         }
-        if (!binarySearch(newWord))
+        if (!binarySearch(dictionary, aWord))
         {
             cout << "That string is not in our dictionary, please insert another one.";
-            cin >> newWord;
+            cin >> aWord;
         }
     }
     return aWord;
 }
 
-string getOrientaion()
+bool getOrientation()
 {
     string aOrientation;
     cout << "what is the orientation of that word? (horizontal or vertical)";
@@ -89,29 +110,32 @@ string getOrientaion()
     return streamlineOrientation(aOrientation);
 }
 
+string getPos()
+{
 
+}
 bool validOrientation(string theorientation)
 {
-    if theorientation == "v" || theorientation == "V" || theorientation == "h" || theorientation == "H" || theorientation == "Vertical" || theorientation == "Horizontal" || theorientation == "vertical" || theorientation == "horizontal")
+    if (theorientation == "v" || theorientation == "V" || theorientation == "h" || theorientation == "H" || theorientation == "Vertical" || theorientation == "Horizontal" || theorientation == "vertical" || theorientation == "horizontal")
     {
-    return true
+    return true;
     }
     else
     {
-        return false
+        return false;
     }
 
 }
 
-string streamlineOrientation(string theorientation)
+bool streamlineOrientation(string theorientation)
 {
     if (theorientation == "v" || theorientation == "V" || theorientation == "Vertical" || theorientation == "vertical")
     {
-        return "V";
+        return false;
     }
     else
     {
-        return "H";
+        return true;
     }
 }
 
@@ -128,26 +152,26 @@ bool dictFill(string filename)
 }
 
 int binarySearch(vector<string> vector, string word)
+{
+    int l = 0, h = (int)vector.size() - 1;
+    while (l < h)
     {
-        int l = 0, h = (int)vector.size() - 1;
-        while (l < h)
+        int m = (l + h) / 2;
+        if (vector[m] == word)
         {
-            int m = (l + h) / 2;
-            if (vector[m] == word)
-            {
-                return true;
-            }
-            if (vector[m] > word)
-            {
-                h = m - 1;
-            }
-            else
-            {
-                l = m + 1;
-            }
+            return true;
+        }
+        if (vector[m] > word)
+        {
+             h = m - 1;
+        }
+        else
+        {
+            l = m + 1;
+        }
     }
     return false;
-
+}
 void boardSize()
 {
     cout << "Insert board length";
@@ -187,5 +211,5 @@ void exportBoard()
         outfile << posicions[i] << " " << directions[i] << " " << words[i] << endl;
     }
     outfile.close();
-    cout << "Your board is now stored at board.txt"
+    cout << "Your board is now stored at board.txt";
 }

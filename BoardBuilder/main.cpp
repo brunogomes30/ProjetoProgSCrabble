@@ -15,14 +15,24 @@ int main()
     vector<string> words;
     vector<string> directions;
     vector<string> posicions;
+    bool stop == false;
     Board newboard;
     dictFill("WORDS.txt")
     boardSize();
-
-
-    insertWords();
-
-
+    while (stop == false)
+    {
+        string newWord = getWordOrEnd();
+        string orientation = getOrientation();
+        string position = getPos();
+        if (testWord(newboard, newWord, orientation, position))
+        {
+            //guarda
+        }
+        else
+        {
+            invalidWord();
+        }
+    }
     exportBoard();
 }
 
@@ -31,51 +41,52 @@ cleanCinStr()
     clearCin();
     cout << "please insert a string";
 }
-void insertWords()
-{
-    bool stop == false;
-    while (stop == false)
-    {
-        cout << "insert a word you wish to put on the board or \"stopbuilding\" if you wish to terminate the board creation, "; //you can also insert all position, direction and name at once using command add (ex:add Ak H eggs)";
-        string newWord;
-        string orientation;
-        string position;
-        cin >> newWord;
-        if (newword == "stopbuilding")
-        {
-            stop == true;
-        }
-        while (cin.fail() || !binarySearch(dictionary, newWord))
-        {
-            if (cin.fail())
-            {
-                clearCinStr();
-                cin >> newWord;
-            }
-            if (!binarySearch(newWord))
-            {
-                cout << "that string is not in our dictionary, please insert another one.";
-                cin >> newWord;
-            }
-        cout << "what is the orientation of that word? (horizontal or vertical)";
-        cin >> orientation;
-        while (cin.fail() || !validOrientation(orientation))
-        {
-            if (cin.fail())
-            {
-                clearCinStr();
-                cin >> orientation;
-            }
-            else
-            {
-                clearCin();
-                cout << "That string was not a valid orientation, please input a new one. (Horizontal or Vertical)";
-                cin >> orientation;
-            }
-        }
-        orientation = streamlineOrientation(orientation);
 
+string getWordOrEnd()
+{
+    string aWord;
+    cout << "insert a word you wish to put on the board or \"stopbuilding\" if you wish to terminate the board creation, ";
+    cin >> aWord;
+    if (aWord == "stopbuilding")
+    {
+        stop == true;
     }
+    while (cin.fail() || !binarySearch(dictionary, newWord))
+    {
+        if (cin.fail());
+        {
+            clearCinStr();
+            cin >> aWord;
+        }
+        if (!binarySearch(newWord))
+        {
+            cout << "That string is not in our dictionary, please insert another one.";
+            cin >> newWord;
+        }
+    }
+    return aWord;
+}
+
+string getOrientaion()
+{
+    string aOrientation;
+    cout << "what is the orientation of that word? (horizontal or vertical)";
+    cin >> aOrientation;
+    while (cin.fail() || !validOrientation(aOrientation))
+    {
+        if (cin.fail())
+        {
+            clearCinStr();
+            cin >> aOrientation;
+        }
+        else
+        {
+            clearCin();
+            cout << "That string was not a valid orientation, please input a new one. (Horizontal or Vertical)";
+            cin >> aOrientation;
+        }
+    }
+    return streamlineOrientation(aOrientation);
 }
 
 
@@ -151,7 +162,7 @@ int sizeValidator()
 {
 	int theinput;
 	cin >> theinput;
-	while ((cin.fail() || (theinput < 2 || theinput > 20)))
+	while ((cin.fail() || (theinput < 1 || theinput > 20)))
 	{
 		if (cin.fail())
 		{
@@ -159,10 +170,10 @@ int sizeValidator()
 			cout << "Please insert an integer";
 			cin >> theinput;
 		}
-        if (theinput < 2 || theinput > 20)
+        if (theinput < 1 || theinput > 20)
         {
             clearCin();
-            cout << "Please insert an integer from 2 to 20";
+            cout << "Please insert an integer from 1 to 20";
             cin >> theinput;
         }
     }
@@ -176,4 +187,5 @@ void exportBoard()
         outfile << posicions[i] << " " << directions[i] << " " << words[i] << endl;
     }
     outfile.close();
+    cout << "Your board is now stored at board.txt"
 }

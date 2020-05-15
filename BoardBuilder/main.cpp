@@ -42,7 +42,7 @@ void insertwords()
             cout << "that word is not valid, ";//explicar pq
         }
     cout << "what is the orientation of that word? (horizontal or vertical)";
-    cin >> orientaion;
+    cin >> orientation;
     {
 
     }

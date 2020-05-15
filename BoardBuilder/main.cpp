@@ -11,10 +11,11 @@ using namespace std;
 
 vector<string> dictionary;
 vector<string> words;
-vector<string> directions;
+vector<string> orientations;
 vector<string> posicions;
 bool stop = false;
 Board newboard;
+Word newWord;
 
 int main()
 {
@@ -22,7 +23,6 @@ int main()
     boardSize();
     while (stop == false)
     {
-        Word newWord;
         newWord.setValue(getWordOrEnd());
         newWord.setIsHorizontal(getOrientation());
         setPos();
@@ -41,20 +41,29 @@ int main()
 
 bool wordIsValid(Board aboard, Word aword)
 {
-    //dafsgdh
+    //dafsgdhghdjfkgfhdgssthdjfkgjhtgsrfgsthdyjfkugfjhdgsrfragtshdyjfdhsg
 }
 void invalidWord()
 {
-    cout << "cycka blyat";
+    cout << "cycka blyat"; //WIOBGOMECPIAÇRGN IANMPAPAXPAEIRKGCNPMJK
 }
 void setPos()
 {
-    cout << ""; //
+    cout << ""; //regsthyjukiloiyutkywertyioyrewtdyutiujthrg
 }
 
 void saveword()
 {
-    //guarda nos vetores
+    words.push_back(newWord.getValue());
+    if (newWord.getIsHorizontal());
+    {
+        orientations.push_back("H");
+    }
+    else
+    {
+        orientations.push_back("W");
+    }
+    //posicions.push_back wieuhfmpqcwg9qehrmhepoxmergu9pqerhcgiqaegx08qperghk
 }
 
 void clearCinStr()
@@ -208,7 +217,7 @@ void exportBoard()
     ofstream outfile("board.txt");
     for(int i=0; i< words.size(); i++)
     {
-        outfile << posicions[i] << " " << directions[i] << " " << words[i] << endl;
+        outfile << posicions[i] << " " << orientations[i] << " " << words[i] << endl;
     }
     outfile.close();
     cout << "Your board is now stored at board.txt";

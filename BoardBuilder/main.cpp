@@ -1,76 +1,153 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "common.h"
 #include "Word.h"
 #include "Colors.h"
 #include "Board.h"
 
+
 using namespace std;
 
 int main()
 {
+    vector<string> dictionary;
+    vector<string> words;
+    vector<string> directions;
+    vector<string> posicions;
     Board newboard;
-    boardsize();
-    insertwords();
-    exportboard();
-    
+    dictFill("WORDS.txt")
+    boardSize();
 
+
+    insertWords();
+
+
+    exportBoard();
 }
 
-
-void insertwords()
+cleanCinStr()
 {
-    cout << "insert a word you wish to put on the board or \"stop\" if you wish to terminate the board creation, you can also insert all position, direction and name at once (ex: Ak H eggs)";
-    string newword;
-    string orientation;
-    cin >> newword;
-    while (cin.fail() || !indict() || !isvalid())
+    clearCin();
+    cout << "please insert a string";
+}
+void insertWords()
+{
+    bool stop == false;
+    while (stop == false)
     {
-        if (cin.fail())
+        cout << "insert a word you wish to put on the board or \"stopbuilding\" if you wish to terminate the board creation, "; //you can also insert all position, direction and name at once using command add (ex:add Ak H eggs)";
+        string newWord;
+        string orientation;
+        string position;
+        cin >> newWord;
+        if (newword == "stopbuilding")
         {
-            clearCin();
-            cout << "please insert a string";
-            cin >> newword;
+            stop == true;
         }
-        if (!indict())
+        while (cin.fail() || !binarySearch(dictionary, newWord))
         {
-            cout << "that string is not in our dictionary";
-            cin >> newword;
-        }
-        if (!isvalid())
+            if (cin.fail())
+            {
+                clearCinStr();
+                cin >> newWord;
+            }
+            if (!binarySearch(newWord))
+            {
+                cout << "that string is not in our dictionary, please insert another one.";
+                cin >> newWord;
+            }
+        cout << "what is the orientation of that word? (horizontal or vertical)";
+        cin >> orientation;
+        while (cin.fail() || !validOrientation(orientation))
         {
-            cout << "that word is not valid, ";//explicar pq
+            if (cin.fail())
+            {
+                clearCinStr();
+                cin >> orientation;
+            }
+            else
+            {
+                clearCin();
+                cout << "That string was not a valid orientation, please input a new one. (Horizontal or Vertical)";
+                cin >> orientation;
+            }
         }
-    cout << "what is the orientation of that word? (horizontal or vertical)";
-    cin >> orientation;
-    {
+        orientation = streamlineOrientation(orientation);
 
-    }
     }
 }
 
-bool indict()
+
+bool validOrientation(string theorientation)
+{
+    if theorientation == "v" || theorientation == "V" || theorientation == "h" || theorientation == "H" || theorientation == "Vertical" || theorientation == "Horizontal" || theorientation == "vertical" || theorientation == "horizontal")
+    {
+    return true
+    }
+    else
+    {
+        return false
+    }
+
+}
+
+string streamlineOrientation(string theorientation)
+{
+    if (theorientation == "v" || theorientation == "V" || theorientation == "Vertical" || theorientation == "vertical")
+    {
+        return "V";
+    }
+    else
+    {
+        return "H";
+    }
+}
+
+bool dictFill(string filename)
 {
     ifstream inStream;
-    inStream.open("WORDS.txt");
-    bool wordfound = false;
-    while (!eof() & !wordfound)
+    inStream.open(filename);
+    string dictword;
+    while (!getline(inStream, dictword).eof())
     {
-        //next line
+        dictionary.push_back(dictword);
     }
+    inStream.close();
 }
 
-void boardsize()
+int binarySearch(vector<string> vector, string word)
+    {
+        int l = 0, h = (int)vector.size() - 1;
+        while (l < h)
+        {
+            int m = (l + h) / 2;
+            if (vector[m] == word)
+            {
+                return true;
+            }
+            if (vector[m] > word)
+            {
+                h = m - 1;
+            }
+            else
+            {
+                l = m + 1;
+            }
+    }
+    return false;
+
+void boardSize()
 {
     cout << "Insert board length";
-    int length = sizevalidator();
+    int length = sizeValidator();
     newboard.setSizeX(length);
     cout << "Insert board wideness";
-    int width = sizevalidator();
+    int width = sizeValidator();
     newboard.setSizeY(width);
 }
 
-int sizevalidator()
+int sizeValidator()
 {
 	int theinput;
 	cin >> theinput;
@@ -91,12 +168,12 @@ int sizevalidator()
     }
 }
 
-void exportboard()
+void exportBoard()
 {
     ofstream outfile("board.txt");
-    for(int i=0; i< wordsnum; i++)
+    for(int i=0; i< words.size(); i++)
     {
-        outfile << posicions[i]<< directions[i] << " " << words[i] << endl;
+        outfile << posicions[i] << " " << directions[i] << " " << words[i] << endl;
     }
     outfile.close();
 }

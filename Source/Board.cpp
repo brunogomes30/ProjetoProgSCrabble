@@ -22,20 +22,24 @@ Board::Board(string path) {
 
 void Board::fillMaps() {
 	for (map<int, Word>::iterator it = words.begin();it != words.end(); it++) {
-		vector<Letter*> letters = it->second.letters;
+		vector<Letter*> letters = it->second.getLetters();
 		for (size_t i = 0;i < letters.size();i++) {
 			int y = it->second.getYPos();
 			int x = it->second.getXPos();
 			if (it->second.getIsHorizontal()) x += i;
 			else y += i;
-			it->second.letters[i] = &lettersMap[y * sizeY + x];
+			letters[i] = &lettersMap[y * sizeY + x];
 		}
+		it->second.setLetters(letters);
 	}
 }
 
 
 void Board::printBoard() {
-	setconsolecolor(BLACK, DARKGRAY);
+	int backgroundColor = LIGHTGRAY;
+	int borderColor = BLACK;
+
+	setconsolecolor(WHITE, borderColor);
 	cout << "   ";
 	for (int x = 0; x < sizeX;x++)
 
@@ -45,30 +49,32 @@ void Board::printBoard() {
 	cout << endl;
 	
 	for (int y = 0; y < sizeY; y++) {
-		setconsolecolor(BLACK, DARKGRAY);
+		setconsolecolor(WHITE, borderColor);
 		cout << " " << char('A' + y) << " ";
 		setconsolecolor(WHITE, BLACK);
+		
 
 		for (int x = 0; x < sizeX; x++) {
+
 			if (field[y][x]->getValue() == ' ')
-				setconsolecolor(BLACK, BROWN);
+				setconsolecolor(BLACK, backgroundColor);
 			else if (field[y][x]->getIsFilled())
-				setconsolecolor(RED, BROWN);
+				setconsolecolor(RED, backgroundColor);
 			else if (field[y][x]->getIsAvailable() && field[y][x]->getCanPlay())
-				setconsolecolor(GREEN, BROWN);
+				setconsolecolor(BLUE, backgroundColor);
 			else
-				setconsolecolor(BLACK, BROWN);
+				setconsolecolor(BLACK, backgroundColor);
 			
 			cout << " " << field[y][x]->getValue() << " ";
 
 		}
-		setconsolecolor(BLACK, DARKGRAY);
+		setconsolecolor(BLACK, borderColor);
 		cout << "   ";
 		cout << "\n";
 		
 		
 	}
-	setconsolecolor(BLACK, DARKGRAY);
+	setconsolecolor(BLACK, borderColor);
 	for (int x = 0; x < sizeX + 2;x++)
 		cout << "   ";
 	setconsolecolor(WHITE, BLACK);
@@ -92,6 +98,7 @@ void Board::reset_board(int sizeY, int sizeX) {
 
 bool Board::insertWord(Word word) {
 	words[word.getYPos() * sizeY + word.getXPos()] = word;
+	vector<Letter*> letters;
 	for (size_t i = 0;i < word.getValue().length(); i++) {
 		int y = word.getYPos();
 		int x = word.getXPos();
@@ -113,8 +120,9 @@ bool Board::insertWord(Word word) {
 		else 
 			//It's invalid
 			return false;
-		words[word.getYPos() * sizeY + word.getXPos()].letters[i] = &lettersMap[y*sizeY + x];
+		letters.push_back(&lettersMap[y*sizeY + x]);
 	}
+	words[word.getYPos() * sizeY + word.getXPos()].setLetters(letters);
 	field[word.getYPos()][word.getXPos()]->setIsAvailable(true);
 	return true;
 }
@@ -175,19 +183,19 @@ bool Board::fillTile(int y, int x, Player &player) {
 		if (word->getLettersRemaining() == 0) {
 			//Finished word
 			player.setPoints(player.getPoints() + 1);
-		} else if (word->letters[word->getIndexToPlay()]->equals(field[y][x])) {
+		} else if (word->getLetters()[word->getIndexToPlay()]->equals(field[y][x])) {
 			//Update indexToPlay in each word
 			word->calculateIndexToPlay();
 
 			//If letter to play in each letters doesn't match, it isn't available to play
 			bool isAvailable= true;
-			for (Word* word2 : word->letters[word->getIndexToPlay()]->getIncludedIn()) {
-				if (!word->letters[word->getIndexToPlay()]->equals(word2->letters[word2->getIndexToPlay()])) {
+			for (Word* word2 : word->getLetters()[word->getIndexToPlay()]->getIncludedIn()) {
+				if (!word->getLetters()[word->getIndexToPlay()]->equals(word2->getLetters()[word2->getIndexToPlay()])) {
 					isAvailable = false;
 					break;
 				}
 			}
-			word->letters[word->getIndexToPlay()]->setIsAvailable(isAvailable);
+			word->getLetters()[word->getIndexToPlay()]->setIsAvailable(isAvailable);
 		}
 	}
 	return true;

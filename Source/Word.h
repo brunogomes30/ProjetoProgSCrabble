@@ -10,9 +10,15 @@ class Letter;
 class Word {
 
 public:	
-		vector<Letter*> letters;
-		Word();
+		
+		
+
+		/*
+		 * Calculates the next index to play in the current word
+		 */
 		void calculateIndexToPlay();
+
+		Word();
 		Word(string str, int y, int x, bool isHorizontal);
 
 		//getters and setters
@@ -28,7 +34,10 @@ public:
 		void setLettersRemaining(int lettersRemaining);
 		int getIndexToPlay();
 		void setIndexToPlay();
+		vector<Letter*> getLetters();
+		void setLetters(vector<Letter *> letters);
 private:
+		vector<Letter*> letters;
 		string value;
 		bool isHorizontal;
 		int xPos;

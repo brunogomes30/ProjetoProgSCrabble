@@ -48,8 +48,9 @@ string getFileFromPath(string path) {
 }
 
 string chooseBoard() {
-	string currentPath = fs::current_path().string();
-	string path = currentPath + "\\Boards";
+	clear();
+	string currentPath = fs::current_path().string(); 
+	string path = currentPath + "\\Boards";		      
 
 	//Prints all available boards
 	cout << "Available Boards:" << endl;
@@ -70,12 +71,11 @@ string chooseBoard() {
 	int n;
 	do {
 		cout << "Choose a file( Insert number or full path)" << endl;
-		cin.clear();
 		getline(cin, answer); //Use getline because path can have spaces
 		if (answer.find("\\") == -1) {
 			//Input is a number
 			stringstream ss = stringstream(answer);
-			ss >> n;
+			ss >> n; 
 		}
 		else {
 			//Input is full path, so n should be ignored

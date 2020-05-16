@@ -9,10 +9,28 @@ using namespace std;
 
 class Pool {
 public:
+		/*
+		 * Adds a word to the pool
+		 * @param word
+		 */
 		void addWord(Word word);
+
+		/*
+		 * Removes and returns a random letter from the pool
+		 */
 		char removeRandomLetter();
+
+		/* 
+		 * Adds a letter/char to the pool
+		 */
 		void addChar(char c);
+
+		/*
+		 * Returns true if pool isn't empty
+		 */
 		bool canRemoveLetter();
+
+
 		Pool();
 		Pool(vector<Word> words);
 

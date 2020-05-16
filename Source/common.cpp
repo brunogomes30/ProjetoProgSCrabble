@@ -22,7 +22,7 @@ void clearCin() {
 /*
  *	Checks if string is in the format "Xx"
  */
-bool checkPosition(string s) {
+bool checkPosition(string s) { 
 	if (s.length() != 2) return false;
 	return 'A' <= s.at(0) && s.at(0) <= 'Z' && 'a' <= s.at(1) && s.at(1) <= 'z';
 }

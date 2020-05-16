@@ -79,3 +79,9 @@ int Word::getIndexToPlay() {
 void Word::setIndexToPlay() {
 	this->indexToPlay = indexToPlay;
 }
+vector<Letter*> Word::getLetters() {
+	return letters;
+}
+void Word::setLetters(vector<Letter *> letters) {
+	this->letters = letters;
+}

@@ -12,9 +12,22 @@ class Letter {
 	public:	
 			Letter();
 			Letter(char value, int yPos, int xPos);
+
+			/*
+			 * Returns true if  both letters are equal 
+			 */
 			bool equals(Letter letter);
+
+			/*
+			 * Returns true if  both letters are equal
+			 */
 			bool equals(Letter *letter);
+
+			/*
+			 * Add word to the words vector that letter is included in
+			 */
 			void addWord(Word *word);
+
 			//Getters and setters
 			vector<Word*> getIncludedIn();
 			void setIncludedIn(vector<Word*> includedIn);
@@ -32,8 +45,9 @@ class Letter {
 			int yPos;
 			int xPos;
 			char value;
+			int a, b = 2 * a;
 			bool isFilled = false;
 			bool isAvailable;
-			bool canPlay; // use only in ScrabbleJunior
+			bool canPlay; // used only in ScrabbleJunior
 };
 #endif

@@ -46,3 +46,5 @@ void Pool::addChar(char c) {
 vector<char> Pool::getAllLetters() {
 	return allLetters;
 }
+
+

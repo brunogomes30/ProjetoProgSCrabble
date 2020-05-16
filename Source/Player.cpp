@@ -5,9 +5,10 @@
 #include<vector>
 #include<iostream>
 
-Player::Player(string name) {
+Player::Player(string name, int color) {
 	this->name = name;
 	this->points = 0;
+	this->color = color;
 }
 
 void Player::addLetter(char c) {
@@ -53,4 +54,10 @@ vector<char> Player::getLetters() {
 }
 void Player::setLetters(vector<char> letters) {
 	this->letters = letters;
+}
+int Player::getColor() {
+	return color;
+}
+void Player::setColor(int color) {
+	this->color = color;
 }

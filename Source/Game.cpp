@@ -18,18 +18,21 @@ Game::Game(string pathToBoard,int numPlayers) {
 
 void Game::askForPlayers() {
 	vector<Player> players;
+	int colors[4] = { BLUE, RED, GREEN, MAGENTA };
 	string name;
 	//getline(cin, name); //Used to prevent a bug
 	for (int i = 1; i <= numPlayers; i++) {
+		setconsolecolor(colors[i - 1], BLACK);
 		cout << "Name of player " << i << ": ";
 		
 		getline(cin, name);
-		Player newPlayer = Player(name);
+		Player newPlayer = Player(name, colors[i - 1]);
 		for (int i = 0;i < 7;i++)
 			//newPlayer.letters.push_back('v');
 			newPlayer.addLetter(gamePool.removeRandomLetter());
 		players.push_back(newPlayer);
 	}
+	setconsolecolor(WHITE, BLACK);
 	this->players = players;
 }
 
@@ -37,8 +40,11 @@ void Game::askForPlayers() {
 void Game::showPlayersInfo() {
 	cout << "Players information: " << endl;
 	for (Player player : players) {
-		cout << player.getName() << "'s letters" << ": ";
-		setconsolecolor(LIGHTBLUE, BLACK);
+		setconsolecolor(player.getColor(), BLACK);
+		cout << player.getName();
+		setconsolecolor(WHITE, BLACK);
+		cout << "'s letters" << ": ";
+		setconsolecolor(player.getColor(), BLACK);
 		for (char c : player.getLetters()) {
 			cout << c << " ";
 		}
@@ -46,7 +52,7 @@ void Game::showPlayersInfo() {
 		cout << endl;
 		
 		cout << "Points: ";
-		setconsolecolor(LIGHTBLUE, BLACK);
+		setconsolecolor(player.getColor(), BLACK);
 		cout << player.getPoints() << endl << endl;
 		setconsolecolor(WHITE, BLACK);
 	}
@@ -58,8 +64,8 @@ void Game::showBoardLabels() {
 	cout << "Red - Tile is filled";
 	setconsolecolor(WHITE, BLACK);
 	cout << endl;
-	setconsolecolor(GREEN, BLACK);
-	cout << "Green - Tile is available to play";
+	setconsolecolor(BLUE, BLACK);
+	cout << "Blue - Tile is available to play";
 	setconsolecolor(WHITE, BLACK);
 	cout << endl;
 
@@ -80,7 +86,6 @@ void Game::fillPool() {
 	for (int y = 0;y < board.getSizeY();y++) for (int x = 0;x < board.getSizeX();x++) {
 		if(board.getField()[y][x]->getValue() != ' ') gamePool.addChar(board.getField()[y][x]->getValue());
 	}
-	
 }
 
 vector<char> Game::getLettersAvailable() {
@@ -97,7 +102,6 @@ vector<char> Game::getLettersAvailable() {
 
 bool Game::checkIfHasAvailableMove(Player player) {
 	vector<char> lettersAvailable = getLettersAvailable();
-	
 
 	for (char c1 : lettersAvailable) for (char c2 : player.getLetters()) {
 		if (c1 == c2) return true;
@@ -150,6 +154,7 @@ void Game::removeLetterFromPlayer(char c) {
 void Game::addRandomLetterToPlayer() {
 	if (gamePool.canRemoveLetter()) players[currentPlayer].addLetter(gamePool.removeRandomLetter());
 }
+
 bool Game::checkIfPlayerHasLetter(char c) {
 	int indexOfChar = players[currentPlayer].getLetterIndex(c);
 	return indexOfChar != -1;
@@ -170,12 +175,25 @@ void Game::changeCanPlay() {
 }
 
 void Game::endGame() {
-	/*sort(players.begin(), players.end(),
-		[](Player const & a, Player const & b) -> bool
-		{ return a.getPoints() < b.getPoints(); });*/
+	//Bubble sort (Doesn't need a good algorithm to sort the scores) 
+	bool flag = true;
+	while (flag) {
+		flag = false;
+		for (size_t i = 0;i < players.size() - 1;i++) {
+			if (players[i].getPoints() < players[i + 1].getPoints()) {
+				
+				Player p1 = players[i];
+				players[i] = players[i + 1];
+				players[i + 1] = p1;
+				flag = true;
+			}
+		}
+	}
+
+	//Print the scores
 	cout << "Points:\n";
 	for (size_t i = 1; i <= players.size(); i++) {
-		cout << i << " - " << players[i - 1].getName() << " - " << players[i - 1].getPoints() << " points.";
+		cout << i << " - " << players[i - 1].getName() << " with " << players[i - 1].getPoints() << " points." << endl;
 	}
 	isGameFinished = true;
 }
@@ -205,7 +223,12 @@ void Game::playGame() {
 			}
 
 			//Input 
-			cout << players[currentPlayer].getName() << "'s turn to play." << endl;
+			cout << endl;
+			setconsolecolor(players[currentPlayer].getColor(), BLACK);
+			cout << players[currentPlayer].getName();
+			setconsolecolor(WHITE, BLACK);
+			cout << "'s turn to play." << endl;
+
 			bool validInput;
 			string position;
 			if (canPlay) {
@@ -227,31 +250,27 @@ void Game::playGame() {
 				}
 				//canPlay = checkIfHasAvailableMove(players[currentPlayer]);
 			}
-			else if(playNum < 2 && gamePool.getAllLetters().size() != 0) {
+			else if(playNum == 1 && gamePool.getAllLetters().size() != 0) {
 				//Didn't play a letter, and can't play any
 				while(true) {
-					if (gamePool.getAllLetters().size() != 1) {
-						//Switch 2 letters
-						cout << "Choose which letters to switch(ex: 'C A' ):";
-						char c1, c2;
-						cin >> c1 >> c2;
-						clearCin();
-						if (!switchLettersFromPlayer(c1, c2))
-							cout << "Can't switch letters '" << c1 << "' and '" << c2 << "'." << endl;
-						else break;
-					} else {
-						//Switch 1 letter because pool only has 1 available
-						cout << "Choose which letter to switch(ex : 'C'):";
-						char c;
-						cin >> c;
-						clearCin();
-						if (checkIfPlayerHasLetter(c)) {
-							players[currentPlayer].replaceLetter(gamePool.removeRandomLetter(), players[currentPlayer].getLetterIndex(c));
-						}
-						else break;
-					}
+					bool switch2Letters = gamePool.getAllLetters().size() > 1;
+					
+					if (switch2Letters) cout << "Choose which letters to switch(ex: 'C A'): ";
+					else cout << "Choose which letter to switch(ex : 'C'):";
+					
+					char c1, c2;
+					cin >> c1;
+					if (switch2Letters) cin >> c2;
+					clearCin();
+
+					if (switch2Letters && !switchLettersFromPlayer(c1, c2))
+						cout << "Can't switch letters '" << c1 << "' and '" << c2 << "'." << endl;
+					else if(!switch2Letters && switchLetterFromPlayer(c1))
+						cout << "Can't switch letter '" << c1 << "'. " << endl;
+					else break;
 				}
-				playNum = 1;
+				//playNum = 1;
+				break;
 			}
 			else //Skip turn
 				break;

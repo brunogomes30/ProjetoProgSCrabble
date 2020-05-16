@@ -37,6 +37,11 @@ public:
 			 * Function to call to play a tile, returns false if it can't be played
 			 */
 			bool fillTile(int y, int x, Player &player);
+
+			/*
+			 *	Returns true if successful
+			 */
+			bool insertWord(Word word);
 			
 			//getters and setters
 			int getSizeY();
@@ -62,10 +67,8 @@ private:
 			 * Updates the maps
 			 */
 			void fillMaps();
-			/*
-			 *	Returns true if successful
-			 */
-			bool insertWord(Word word);
+
+			
 
 };
 

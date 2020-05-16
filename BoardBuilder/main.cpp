@@ -43,7 +43,37 @@ int main()
 
 bool wordIsValid(Board aboard, Word aword)
 {
-    //dafsgdhghdjfkgfhdgssthdjfkgjhtgsrfgsthdyjfkugfjhdgsrfragtshdyjfdhsg
+    if (aword.getXPos() > aboard.getSizeX() || aword.getYPos() > aboard.getSizeY())
+    {
+        return false;
+    }
+    if (aword.getIsHorizontal())
+    {
+        if (aword.getXPos() + aword.getValue().size() > aboard.getSizeX())
+        {
+            return false;
+        }
+        for(int i=0; i<aword.getValue().size(); i++)
+        {
+            if (aword.getValue()[i] != field[aword.getXPos()+i][aword.getYPos()])
+            {
+                return false;
+            }
+        }
+    else 
+    {
+        if (aword.getYPos() + aword.getValue().size() > aboard.getSizeY())
+        {
+            return false;
+        }
+        for(int i=0; i<aword.getValue().size(); i++)
+        {
+            if (aword.getValue()[i] != field[aword.getXPos()][aword.getYPos()+1])
+            {
+                return false;
+            }
+        } 
+    
 }
 void invalidWord()
 {

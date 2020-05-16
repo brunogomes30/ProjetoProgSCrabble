@@ -11,34 +11,34 @@
 
 using namespace std;
 
-vector<string> dictionary;
-vector<string> words;
-vector<string> orientations;
-vector<string> posicions;
-bool stop = false;
-Board newboard;
-Word newWord;
 
 int main()
 {
-    dictFill("WORDS.txt");
-    boardSize();
+    vector<string> dictionary;
+    vector<string> words;
+    vector<string> orientations;
+    vector<string> posicions;
+    bool stop = false;
+    Board newboard;
+    Word newWord;
+    dictFill("WORDS.txt", dictionary);
+    boardSize(newboard);
     while (stop == false)
     {
-        newWord.setValue(getWordOrEnd());
+        newWord.setValue(getWordOrEnd(dictionary, stop));
         newWord.setIsHorizontal(getOrientation());
-        setPos();
+        setPos(newWord);
         if (wordIsValid(newboard, newWord))
         {
             newboard.insertWord(newWord);
-            saveword();
+            saveword(newWord, orientations, words);
         }
         else
         {
             invalidWord();
         }
     }
-    exportBoard();
+    exportBoard(orientations, posicions, words);
 }
 
 bool wordIsValid(Board aboard, Word aword)
@@ -49,10 +49,10 @@ void invalidWord()
 {
     cout << "The word you entered is invalid in this position, please try a new position or introduce a new one. You can also stop.";
 }
-void setPos()
+void setPos(Word aWord)
 {
     string xpos;
-    string ypos;
+    char ypos;
     cout << "Please input the letter corresponding to the position of the first letter of the desired word in the x axis or that same letter followed by the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
     cin >> xpos;
     while (cin.fail()|| xpos.size() > 2 || xpos.size() == 0)
@@ -75,29 +75,35 @@ void setPos()
         {
             xpos[i] = tolower(xpos[i]);
         }
-        newWord.setXPos(int(xpos[0])-)97;
-        newWord.setYPos(int(xpos[1])-97);
+        aWord.setXPos(int(xpos[0])-97);
+        aWord.setYPos(int(xpos[1])-97);
     }
     else
     {
         xpos = tolower(xpos[0]);
         cout << "Please input the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
         cin >> ypos;
+        while (cin.fail() || cinfdrtahjstndg)
+        {
+            clearCin();
+            cout << "That was not a valid letter of the y axis of the board.";
+            cin >> ypos;
+        }
     }
     
 
 }
 
-void saveword()
+void saveword(Word aWord, vector<string> directionVector, vector<string> wordNameVector)
 {
-    words.push_back(newWord.getValue());
-    if (newWord.getIsHorizontal());
+    wordNameVector.push_back(aWord.getValue());
+    if (aWord.getIsHorizontal());
     {
-        orientations.push_back("H");
+        directionVector.push_back("H");
     }
     else
     {
-        orientations.push_back("W");
+        directionVector.push_back("W");
     }
     //posicions.push_back wieuhfmpqcwg9qehrmhepoxmergu9pqerhcgiqaegx08qperghk
 }
@@ -108,23 +114,23 @@ void clearCinStr()
     cout << "Please insert a string";
 }
 
-string getWordOrEnd()
+string getWordOrEnd(vector<string> aDictionary, bool endingBool)
 {
     string aWord;
     cout << "Insert a word you would want to put on the board or type \"stopbuilding\" if you want to terminate the board creation, ";
     cin >> aWord;
     if (aWord == "stopbuilding")
     {
-        stop == true;
+        endingBool == true;
     }
-    while (cin.fail() || !binarySearch(dictionary, aWord))
+    while (cin.fail() || !binarySearch(aDictionary, aWord))
     {
         if (cin.fail());
         {
             clearCinStr();
             cin >> aWord;
         }
-        if (!binarySearch(dictionary, aWord))
+        if (!binarySearch(aDictionary, aWord))
         {
             cout << "That string is not in our dictionary, please insert another one.";
             cin >> aWord;
@@ -155,6 +161,7 @@ bool getOrientation()
     return streamlineOrientation(aOrientation);
 }
 
+
 bool validOrientation(string theorientation)
 {
     if (theorientation == "v" || theorientation == "V" || theorientation == "h" || theorientation == "H" || theorientation == "Vertical" || theorientation == "Horizontal" || theorientation == "vertical" || theorientation == "horizontal")
@@ -180,14 +187,14 @@ bool streamlineOrientation(string theorientation)
     }
 }
 
-bool dictFill(string filename)
+bool dictFill(string filename, vector<string> aDictionary)
 {
     ifstream inStream;
     inStream.open(filename);
     string dictword;
     while (!getline(inStream, dictword).eof())
     {
-        dictionary.push_back(dictword);
+        aDictionary.push_back(dictword);
     }
     inStream.close();
 }
@@ -214,14 +221,14 @@ int binarySearch(vector<string> vector, string word)
     return false;
 }
 
-void boardSize()
+void boardSize(Board aBoard)
 {
     cout << "Insert board length" << endl;
     int length = sizeValidator();
-    newboard.setSizeX(length);
+    aBoard.setSizeX(length);
     cout << "Insert board wideness" << endl;
     int width = sizeValidator();
-    newboard.setSizeY(width);
+    aBoard.setSizeY(width);
 }
 
 int sizeValidator()
@@ -245,12 +252,12 @@ int sizeValidator()
     }
 }
 
-void exportBoard()
-{
+void exportBoard(vector<string> pos, vector<string> orientação, vector<string> palavras)
+ {
     ofstream outfile("board.txt");
-    for(int i=0; i< words.size(); i++)
+    for(int i=0; i< palavras.size(); i++)
     {
-        outfile << posicions[i] << " " << orientations[i] << " " << words[i] << endl;
+        outfile << pos[i] << " " << orientação[i] << " " << palavras[i] << endl;
     }
     outfile.close();
     cout << "Your board is now stored at board.txt" << endl;

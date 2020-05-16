@@ -105,6 +105,7 @@ void saveword(Word aWord, vector<string> directionVector, vector<string> wordNam
     {
         directionVector.push_back("W");
     }
+
     //posicions.push_back wieuhfmpqcwg9qehrmhepoxmergu9pqerhcgiqaegx08qperghk
 }
 

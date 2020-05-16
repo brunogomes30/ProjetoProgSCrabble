@@ -2,7 +2,7 @@
 #define COMMON_GUARD
 
 #include<string>
-using namespace std;
+
 /*
  * Clears the console screen
  */
@@ -16,7 +16,7 @@ void setconsolecolor(int textColor, int bgColor);
 /*
  * Checks if the string s is in the format 'Xx', first char uppercase and second char lowercase 
  */
-bool checkPosition(string s);
+bool checkPosition(std::string s);
 
 /*
  * Clears the input buffer

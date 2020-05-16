@@ -8,15 +8,22 @@
 #include<vector>
 #include<iostream>
 #include<map>
-using namespace std;
+
 
 class Board {
 public:		
 
-			/* 
+			/*
 			 * Reads board from file, initializes the board
 			 */
-			bool readBoardFromFile(string path);
+			bool readBoardFromFile(std::string path);
+
+			/*
+			* Reads board from file, initializes the board, and checks if can be played by the number of players provided
+			* @param path
+			* @param numOfPlayers
+			*/
+			bool readBoardFromFile(std::string path, int numOfPlayers);
 			
 			/*
 			 * Prints board with all the information(If tile can be play, if it's filled, etc...)
@@ -31,7 +38,7 @@ public:
 			/*
 			 * Constructor that calls readBoardFromFile
 			 */
-			Board(string path);
+			Board(std::string path);
 			
 			/* 
 			 * Function to call to play a tile, returns false if it can't be played
@@ -48,13 +55,13 @@ public:
 			void setSizeY(int sizeY);
 			int getSizeX();
 			void setSizeX(int sizeX);
-			vector<vector<Letter*>> getField();
-			void setField(vector<vector<Letter*>> field);
+			std::vector<std::vector<Letter*>> getField();
+			void setField(std::vector<std::vector<Letter*>> field);
 
 private:	
-			vector<vector<Letter*>> field;
-			map<int, Word> words;
-			map<int, Letter> lettersMap;
+			std::vector<std::vector<Letter*>> field;
+			std::map<int, Word> words;
+			std::map<int, Letter> lettersMap;
 			int sizeY;
 			int sizeX;
 

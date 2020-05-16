@@ -3,10 +3,10 @@
 #include<string>
 #include<vector>
 #include<iostream>
-using namespace std;
+
 class Player {
 	public:	
-			Player(string name, int color);
+			Player(std::string name, int color);
 			
 			/*
 			 * Adds a letter to play
@@ -32,17 +32,17 @@ class Player {
 			void removeLetter(int index);
 
 			//Gettes and setters
-			string getName();
-			void setName(string name);
+			std::string getName();
+			void setName(std::string name);
 			int getPoints();
 			void setPoints(int points);
-			vector<char> getLetters();
-			void setLetters(vector<char> letters);
+			std::vector<char> getLetters();
+			void setLetters(std::vector<char> letters);
 			int getColor();
 			void setColor(int color);
 	private:
-			vector<char> letters;
-			string name;
+			std::vector<char> letters;
+			std::string name;
 			int points;
 			int color;
 			

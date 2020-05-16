@@ -5,7 +5,7 @@
 #include<string>
 #include<vector>
 #include<iostream>
-using namespace std;
+
 class Letter;
 class Word {
 
@@ -19,7 +19,7 @@ public:
 		void calculateIndexToPlay();
 
 		Word();
-		Word(string str, int y, int x, bool isHorizontal);
+		Word(std::string str, int y, int x, bool isHorizontal);
 
 		//getters and setters
 		bool getIsHorizontal();
@@ -28,17 +28,17 @@ public:
 		void setXPos(int xPos);
 		int getYPos();
 		void setYPos(int yPos);
-		string getValue();
-		void setValue(string value);
+		std::string getValue();
+		void setValue(std::string value);
 		int getLettersRemaining();
 		void setLettersRemaining(int lettersRemaining);
 		int getIndexToPlay();
 		void setIndexToPlay();
-		vector<Letter*> getLetters();
-		void setLetters(vector<Letter *> letters);
+		std::vector<Letter*> getLetters();
+		void setLetters(std::vector<Letter *> letters);
 private:
-		vector<Letter*> letters;
-		string value;
+		std::vector<Letter*> letters;
+		std::string value;
 		bool isHorizontal;
 		int xPos;
 		int yPos;

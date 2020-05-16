@@ -56,7 +56,7 @@ void Game::showPlayersInfo() {
 		cout << player.getPoints() << endl << endl;
 		setconsolecolor(WHITE, BLACK);
 	}
-	cout << "Pool size: " << gamePool.getAllLetters().size() << endl;
+	//cout << "Pool size: " << gamePool.getAllLetters().size() << endl;
 }
 
 void Game::showBoardLabels() {
@@ -114,10 +114,9 @@ bool Game::switchLetterFromPlayer(char c) {
 	if (indexOfChar == -1)
 		return false;
 
-	players[currentPlayer].replaceLetter(gamePool.removeRandomLetter(), indexOfChar);
-
-	//players[currentPlayer].letters.erase(players[currentPlayer].letters.begin() + indexOfChar);
-	//if(gamePool.canRemoveLetter()) players[currentPlayer].letters.insert(players[currentPlayer].letters.begin() + indexOfChar, gamePool.removeRandomLetter());
+	if (addRandomLetterToPlayer()) {
+		gamePool.addChar(c);
+	}
 
 	return true;
 }
@@ -133,13 +132,11 @@ bool Game::switchLettersFromPlayer(char c1, char c2) {
 		index2 = players[currentPlayer].getLetterIndex(c2);
 	if (index1 == -1 || index2 == -1) 
 		return false;
-	if (gamePool.canRemoveLetter()){
-		players[currentPlayer].replaceLetter(gamePool.removeRandomLetter(), index1);
+	if (addRandomLetterToPlayer()){
 		gamePool.addChar(c1);
 	}
 
-	if(gamePool.canRemoveLetter()){
-		players[currentPlayer].replaceLetter(gamePool.removeRandomLetter(), index2);
+	if(addRandomLetterToPlayer()){
 		gamePool.addChar(c2);
 	}
 	return true;
@@ -151,8 +148,9 @@ void Game::removeLetterFromPlayer(char c) {
 		players[currentPlayer].removeLetter(index);
 }
 
-void Game::addRandomLetterToPlayer() {
+bool Game::addRandomLetterToPlayer() {
 	if (gamePool.canRemoveLetter()) players[currentPlayer].addLetter(gamePool.removeRandomLetter());
+	return gamePool.canRemoveLetter();
 }
 
 bool Game::checkIfPlayerHasLetter(char c) {

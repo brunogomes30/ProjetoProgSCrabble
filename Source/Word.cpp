@@ -20,7 +20,7 @@ Word::Word() {
 Word::Word(string str, int y, int x, bool isHorizontal) {
 	this->value = str;
 	vector<Letter*> letters(str.length());
-	for (int i = 0;i < str.length();i++) {
+	for (size_t i = 0;i < str.length();i++) {
 		if (isHorizontal) letters[i] = &Letter(str.at(i), y, x + i);
 		else letters[i] = &Letter(str.at(i), y + i, x);
 	}

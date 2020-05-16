@@ -5,7 +5,7 @@
 #include<string>
 #include<vector>
 #include<iostream>
-using namespace std;
+
 
 class Pool {
 public:
@@ -32,12 +32,12 @@ public:
 
 
 		Pool();
-		Pool(vector<Word> words);
+		Pool(std::vector<Word> words);
 
 		//getters and setters
-		vector<char> getAllLetters();
+		std::vector<char> getAllLetters();
 private:	
-		vector<char> allLetters;
+		std::vector<char> allLetters;
 };
 
 #endif

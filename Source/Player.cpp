@@ -5,6 +5,8 @@
 #include<vector>
 #include<iostream>
 
+using namespace std;
+
 Player::Player(string name, int color) {
 	this->name = name;
 	this->points = 0;

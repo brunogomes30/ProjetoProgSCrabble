@@ -7,7 +7,7 @@
 #include<vector>
 #include<iostream>
 class Word;
-using namespace std;
+
 class Letter {
 	public:	
 			Letter();
@@ -29,8 +29,8 @@ class Letter {
 			void addWord(Word *word);
 
 			//Getters and setters
-			vector<Word*> getIncludedIn();
-			void setIncludedIn(vector<Word*> includedIn);
+			std::vector<Word*> getIncludedIn();
+			void setIncludedIn(std::vector<Word*> includedIn);
 			char getValue();
 			void setValue(char value);
 			bool getIsFilled();
@@ -41,7 +41,7 @@ class Letter {
 			void setCanPlay(bool canPlay);
 
 	private:
-			vector<Word*> includedIn;
+			std::vector<Word*> includedIn;
 			int yPos;
 			int xPos;
 			char value;

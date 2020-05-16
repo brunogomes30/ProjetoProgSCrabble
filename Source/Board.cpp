@@ -126,11 +126,15 @@ bool Board::insertWord(Word word) {
 	field[word.getYPos()][word.getXPos()]->setIsAvailable(true);
 	return true;
 }
-
 bool Board::readBoardFromFile(string path) {
+	return readBoardFromFile(path, 0);
+}
+
+bool Board::readBoardFromFile(string path, int numOfPlayers) {
 	ifstream boardFile;
 	stringstream ss;
 	string line, dummy ="";
+	int numOfLetters = 0;
 	try {
 		boardFile.open(path, ios::in);
 		//Read size 
@@ -164,7 +168,14 @@ bool Board::readBoardFromFile(string path) {
 	catch (int e) {
 		return false;
 	}
-	return words.size() != 0;
+
+	//Count letters
+	for (int y = 0; y < sizeY; y++) for (int x = 0; x < sizeX; x++) {
+		if (field[y][x]->getValue() != ' ') 
+			numOfLetters += 1;
+	}
+
+	return numOfLetters > numOfPlayers * 7;
 }
 
 bool Board::fillTile(int y, int x, Player &player) {
@@ -187,7 +198,7 @@ bool Board::fillTile(int y, int x, Player &player) {
 			//Update indexToPlay in each word
 			word->calculateIndexToPlay();
 
-			//If letter to play in each letters doesn't match, it isn't available to play
+			//If letter to play in each words don't match, it isn't available to play
 			bool isAvailable= true;
 			for (Word* word2 : word->getLetters()[word->getIndexToPlay()]->getIncludedIn()) {
 				if (!word->getLetters()[word->getIndexToPlay()]->equals(word2->getLetters()[word2->getIndexToPlay()])) {

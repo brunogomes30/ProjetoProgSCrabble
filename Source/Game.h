@@ -7,10 +7,10 @@
 #include<string>
 #include<vector>
 #include<iostream>
-using namespace std;
+
 class Game {
 public:	
-		Game(string pathToBoard, int numPlayers);
+		Game(std::string pathToBoard, int numPlayers);
 
 		/*
 		 * Prints the labels of the colors
@@ -30,7 +30,7 @@ private:
 		bool isGameFinished;
 		Pool gamePool;
 		Board board;
-		vector<Player> players;
+		std::vector<Player> players;
 		int currentPlayer;
 	
 
@@ -91,9 +91,9 @@ private:
 		void removeLetterFromPlayer(char c);
 
 		/*
-		 * Adds a random letter to the currentPlayer
+		 * Adds a random letter to the currentPlayer, returns true if possible
 		 */
-		void addRandomLetterToPlayer();
+		bool addRandomLetterToPlayer();
 
 		/*
 		 * Sets which tiles can be played by the currentPlayer
@@ -108,6 +108,6 @@ private:
 		/*
 		 * Returns a vector of char that has the letters available to play
 		 */
-		vector<char> getLettersAvailable();
+		std::vector<char> getLettersAvailable();
 };
 #endif

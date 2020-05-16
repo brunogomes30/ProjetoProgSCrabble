@@ -1,10 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 #include "common.h"
 #include "Word.h"
 #include "Colors.h"
 #include "Board.h"
+
 
 
 using namespace std;
@@ -45,11 +47,45 @@ bool wordIsValid(Board aboard, Word aword)
 }
 void invalidWord()
 {
-    cout << "cycka blyat"; //WIOBGOMECPIAÇRGN IANMPAPAXPAEIRKGCNPMJK
+    cout << "The word you entered is invalid in this position, please try a new position or introduce a new one. You can also stop.";
 }
 void setPos()
 {
-    cout << ""; //regsthyjukiloiyutkywertyioyrewtdyutiujthrg
+    string xpos;
+    string ypos;
+    cout << "Please input the letter corresponding to the position of the first letter of the desired word in the x axis or that same letter followed by the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
+    cin >> xpos;
+    while (cin.fail()|| xpos.size() > 2 || xpos.size() == 0)
+    {
+        if (cin.fail())
+        {
+            clearCinStr();
+            cin >> xpos;
+        }
+        else
+        {
+            cout << "That was not a valid position. Please input a valid one." << endl;
+            cin >> xpos;
+        }
+        
+    }
+    if (xpos.size() == 2)
+    {
+        for(int i=0; i<2; i++) 
+        {
+            xpos[i] = tolower(xpos[i]);
+        }
+        newWord.setXPos(int(xpos[0])-)97;
+        newWord.setYPos(int(xpos[1])-97);
+    }
+    else
+    {
+        xpos = tolower(xpos[0]);
+        cout << "Please input the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
+        cin >> ypos;
+    }
+    
+
 }
 
 void saveword()
@@ -69,7 +105,7 @@ void saveword()
 void clearCinStr()
 {
     clearCin();
-    cout << "please insert a string";
+    cout << "Please insert a string";
 }
 
 string getWordOrEnd()
@@ -100,7 +136,7 @@ string getWordOrEnd()
 bool getOrientation()
 {
     string aOrientation;
-    cout << "what is the orientation of that word? (horizontal or vertical)";
+    cout << "what is the orientation of that word? (horizontal or vertical)" << endl;
     cin >> aOrientation;
     while (cin.fail() || !validOrientation(aOrientation))
     {
@@ -112,17 +148,13 @@ bool getOrientation()
         else
         {
             clearCin();
-            cout << "That string was not a valid orientation, please input a new one. (Horizontal or Vertical)";
+            cout << "That string was not a valid orientation, please input a new one. (Horizontal or Vertical)" << endl;
             cin >> aOrientation;
         }
     }
     return streamlineOrientation(aOrientation);
 }
 
-string getPos()
-{
-
-}
 bool validOrientation(string theorientation)
 {
     if (theorientation == "v" || theorientation == "V" || theorientation == "h" || theorientation == "H" || theorientation == "Vertical" || theorientation == "Horizontal" || theorientation == "vertical" || theorientation == "horizontal")
@@ -181,12 +213,13 @@ int binarySearch(vector<string> vector, string word)
     }
     return false;
 }
+
 void boardSize()
 {
-    cout << "Insert board length";
+    cout << "Insert board length" << endl;
     int length = sizeValidator();
     newboard.setSizeX(length);
-    cout << "Insert board wideness";
+    cout << "Insert board wideness" << endl;
     int width = sizeValidator();
     newboard.setSizeY(width);
 }
@@ -200,13 +233,13 @@ int sizeValidator()
 		if (cin.fail())
 		{
 			clearCin();
-			cout << "Please insert an integer";
+			cout << "Please insert an integer" << endl;
 			cin >> theinput;
 		}
         if (theinput < 1 || theinput > 20)
         {
             clearCin();
-            cout << "Please insert an integer from 1 to 20";
+            cout << "Please insert an integer from 1 to 20" << endl;
             cin >> theinput;
         }
     }
@@ -220,5 +253,5 @@ void exportBoard()
         outfile << posicions[i] << " " << orientations[i] << " " << words[i] << endl;
     }
     outfile.close();
-    cout << "Your board is now stored at board.txt";
+    cout << "Your board is now stored at board.txt" << endl;
 }

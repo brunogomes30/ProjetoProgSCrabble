@@ -28,7 +28,7 @@ int main()
         newWord.setValue(getWordOrEnd(dictionary, stop));
         newWord.setIsHorizontal(getOrientation());
         setPos(newWord);
-        if (wordIsValid(newboard, newWord))
+        if (wordIsValid(newboard, newWord, words))
         {
             newboard.insertWord(newWord);
             saveword(newWord, orientations, words, posicions);
@@ -41,7 +41,7 @@ int main()
     exportBoard(orientations, posicions, words);
 }
 
-bool wordIsValid(Board aboard, Word aword)
+bool wordIsValid(Board aboard, Word aword, vector<string> wordsVector)
 {
     if (aword.getXPos() > aboard.getSizeX() || aword.getYPos() > aboard.getSizeY())
     {
@@ -55,11 +55,12 @@ bool wordIsValid(Board aboard, Word aword)
         }
         for(int i=0; i<aword.getValue().size(); i++)
         {
-            if (aword.getValue()[i] != field[aword.getXPos()+i][aword.getYPos()])
+            if (aword.getValue()[i] != aboard.getField()[aword.getXPos()+i][aword.getYPos()]->getValue())
             {
                 return false;
             }
         }
+    }
     else 
     {
         if (aword.getYPos() + aword.getValue().size() > aboard.getSizeY())
@@ -68,13 +69,59 @@ bool wordIsValid(Board aboard, Word aword)
         }
         for(int i=0; i<aword.getValue().size(); i++)
         {
-            if (aword.getValue()[i] != field[aword.getXPos()][aword.getYPos()+1])
+            if (aword.getValue()[i] != aboard.getField()[aword.getXPos()][aword.getYPos()+1]->getValue())
             {
                 return false;
             }
-        } 
-    
+        }
+    }
+    advancedValidator(wordsVector, aboard, aword);
 }
+
+bool advancedValidator(vector<string> wordsVector, Board aBoard, Word aword)
+{
+    string astr;
+    vector<string> newVector;
+    int k;
+    for (int i = 0; i < aBoard.getSizeX(); i++) {
+        for (int j = 0; j < aBoard.getSizeY(); j++)
+        {
+            if (aBoard.getField()[aword.getXPos()][aword.getYPos() - 1]->getValue() == ' ' && aBoard.getField()[aword.getXPos()][aword.getYPos() + 1]->getValue() != ' ')
+            {
+                k = 1;
+                astr = "";
+                while (aBoard.getField()[aword.getXPos()][aword.getYPos() + k]->getValue() != ' ')
+                {
+                    astr.push_back(aBoard.getField()[aword.getXPos()+k][aword.getYPos()]->getValue());
+                    k++;
+                }
+            }
+            newVector.push_back(astr);
+
+
+            if (aBoard.getField()[aword.getXPos() - 1][aword.getYPos()]->getValue() == ' ' && aBoard.getField()[aword.getXPos() + 1][aword.getYPos() + 1]->getValue() != ' ')
+            {
+                astr = "";
+                k = 1;
+                while (aBoard.getField()[aword.getXPos()+k][aword.getYPos()]->getValue() != ' ')
+                {
+                    astr.push_back(aBoard.getField()[aword.getXPos() + k][aword.getYPos()]->getValue());
+                    k++;
+                }
+            }
+            newVector.push_back(astr);
+        }
+    }
+    vector<string> wordsv2 = wordsVector;
+    sort(newVector.begin(), newVector.end());
+    sort(wordsv2.begin(), wordsv2.end());
+    if (newVector != wordsv2);
+    {
+        return false;
+    }
+    return true;
+}
+
 void invalidWord()
 {
     cout << "The word you entered is invalid in this position, please try a new position or introduce a new one. You can also stop.";

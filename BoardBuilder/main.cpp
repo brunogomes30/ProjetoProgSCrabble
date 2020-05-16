@@ -31,7 +31,7 @@ int main()
         if (wordIsValid(newboard, newWord))
         {
             newboard.insertWord(newWord);
-            saveword(newWord, orientations, words);
+            saveword(newWord, orientations, words, posicions);
         }
         else
         {
@@ -43,7 +43,37 @@ int main()
 
 bool wordIsValid(Board aboard, Word aword)
 {
-    //dafsgdhghdjfkgfhdgssthdjfkgjhtgsrfgsthdyjfkugfjhdgsrfragtshdyjfdhsg
+    if (aword.getXPos() > aboard.getSizeX() || aword.getYPos() > aboard.getSizeY())
+    {
+        return false;
+    }
+    if (aword.getIsHorizontal())
+    {
+        if (aword.getXPos() + aword.getValue().size() > aboard.getSizeX())
+        {
+            return false;
+        }
+        for(int i=0; i<aword.getValue().size(); i++)
+        {
+            if (aword.getValue()[i] != field[aword.getXPos()+i][aword.getYPos()])
+            {
+                return false;
+            }
+        }
+    else 
+    {
+        if (aword.getYPos() + aword.getValue().size() > aboard.getSizeY())
+        {
+            return false;
+        }
+        for(int i=0; i<aword.getValue().size(); i++)
+        {
+            if (aword.getValue()[i] != field[aword.getXPos()][aword.getYPos()+1])
+            {
+                return false;
+            }
+        } 
+    
 }
 void invalidWord()
 {
@@ -83,21 +113,23 @@ void setPos(Word aWord)
         xpos = tolower(xpos[0]);
         cout << "Please input the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
         cin >> ypos;
-        while (cin.fail() || cinfdrtahjstndg)
+        while (cin.fail() || !isalpha(ypos))
         {
             clearCin();
             cout << "That was not a valid letter of the y axis of the board.";
             cin >> ypos;
         }
+        aWord.setXPos(xpos[0]-97);
+        aWord.setYPos(ypos-97);
     }
     
 
 }
 
-void saveword(Word aWord, vector<string> directionVector, vector<string> wordNameVector)
+void saveword(Word aWord, vector<string> directionVector, vector<string> wordNameVector, vector<string> posVector)
 {
     wordNameVector.push_back(aWord.getValue());
-    if (aWord.getIsHorizontal());
+    if (aWord.getIsHorizontal())
     {
         directionVector.push_back("H");
     }
@@ -105,8 +137,7 @@ void saveword(Word aWord, vector<string> directionVector, vector<string> wordNam
     {
         directionVector.push_back("W");
     }
-
-    //posicions.push_back wieuhfmpqcwg9qehrmhepoxmergu9pqerhcgiqaegx08qperghk
+    posVector.push_back(to_string((aWord.getXPos())) + to_string(aWord.getYPos()));
 }
 
 void clearCinStr()

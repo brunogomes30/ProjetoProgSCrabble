@@ -237,7 +237,7 @@ bool getOrientation()
 }
 
 
-/*
+
 void dictFill(string filename, vector<string> aDictionary)
 {
     ifstream inStream;
@@ -247,7 +247,7 @@ void dictFill(string filename, vector<string> aDictionary)
     {
         cout << "Failed to open " << filename << endl;
     }
-    while (getline(inStream, dictword))
+    while (getline(inStream, dictword))//(!inStream.eof())
     {
         cout << dictword;
         aDictionary.push_back(dictword);
@@ -255,26 +255,7 @@ void dictFill(string filename, vector<string> aDictionary)
     inStream.close();
 }
 
-*/ 
 
-//old code on top 
-
-void dictFill(string filename, vector<string> aDictionary)
-{
-    ifstream inStream; 
-    inStream.open(filename);
-    if (inStream.is_open())
-    {
-        cout << "Sucessfully oppened " << filename << endl;
-    }
-    else
-    {
-        cout << "Failed to open " << filename << endl;
-    }
-//    string astring;
-//    inStream >> astring;
-//    cout << astring;
-}
 
 int sizeValidator()
 {
@@ -336,10 +317,6 @@ int main(){
     Board newboard;
     Word newWord;
     dictFill("WORDS.txt", dictionary);
-//    dictionary.push_back("atest");
-//    dictionary.push_back("test");
-//    dictionary.push_back("thetest");
-//    dictionary.push_back("ihatetest");
     boardSize(newboard);
     while (!stop)
     {
@@ -350,6 +327,7 @@ int main(){
         }
         else
         {
+            newboard.printBoard();
             newWord.setIsHorizontal(getOrientation());
             setPos(newWord);
             if (wordIsValid(newboard, newWord, words))

@@ -22,4 +22,6 @@ bool checkPosition(std::string s);
  * Clears the input buffer
  */
 void clearCin();
+
+void clearCinStr();
 #endif

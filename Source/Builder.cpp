@@ -2,26 +2,22 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <string>
 #include "common.h"
 #include "Word.h"
-#include "Colors.h"
 #include "Board.h"
 
 
 
 using namespace std;
 
-void clearCinStr()
-{
-    clearCin();
-    cout << "Please insert a string";
-}
-
 bool advancedValidator(vector<string> wordsVector, Board aBoard, Word aword)
 {
     string astr;
     vector<string> newVector;
     int k;
+    vector<string> wordsv2 = wordsVector;
+    wordsv2.push_back(aword.getValue());
     for (int i = 0; i < aBoard.getSizeX(); i++) {
         for (int j = 0; j < aBoard.getSizeY(); j++)
         {
@@ -51,7 +47,6 @@ bool advancedValidator(vector<string> wordsVector, Board aBoard, Word aword)
             newVector.push_back(astr);
         }
     }
-    vector<string> wordsv2 = wordsVector;
     sort(newVector.begin(), newVector.end());
     sort(wordsv2.begin(), wordsv2.end());
     if (newVector != wordsv2)
@@ -99,14 +94,11 @@ bool wordIsValid(Board aboard, Word aword, vector<string> wordsVector)
 }
 
 
-void invalidWord()
-{
-    cout << "The word you entered is invalid in this position, please try a new position or introduce a new one. You can also stop.";
-}
 void setPos(Word aWord)
 {
     string xpos;
     char ypos;
+    clear();
     cout << "Please input the letter corresponding to the position of the first letter of the desired word in the x axis or that same letter followed by the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
     cin >> xpos;
     while (cin.fail()|| xpos.size() > 2 || xpos.size() == 0)
@@ -140,7 +132,7 @@ void setPos(Word aWord)
         while (cin.fail() || !isalpha(ypos))
         {
             clearCin();
-            cout << "That was not a valid letter of the y axis of the board.";
+            cout << "That was not a valid letter of the y axis of the board." << endl;
             cin >> ypos;
         }
         aWord.setXPos(xpos[0]-97);
@@ -190,13 +182,13 @@ bool binarySearch(vector<string> vector, string word)
 string getWordOrEnd(vector<string> aDictionary, bool endingBool)
 {
     string aWord;
-    cout << "Insert a word you would want to put on the board or type \"stopbuilding\" if you want to terminate the board creation, ";
+    cout << "Insert a word you would want to put on the board or type \"stopandstore\" if you want to terminate the board creation, " << endl;
     cin >> aWord;
-    if (aWord == "stopbuilding")
+    if (aWord == "stopandstore")
     {
         endingBool = true;
     }
-    while (cin.fail() || !binarySearch(aDictionary, aWord))
+    while ((cin.fail() || !binarySearch(aDictionary, aWord)) && !endingBool)
     {
         if (cin.fail())
         {
@@ -205,7 +197,7 @@ string getWordOrEnd(vector<string> aDictionary, bool endingBool)
         }
         if (!binarySearch(aDictionary, aWord))
         {
-            cout << "That string is not in our dictionary, please insert another one.";
+            cout << "That is not in our dictionary, please insert another one." << endl;
             cin >> aWord;
         }
     }
@@ -246,15 +238,18 @@ bool getOrientation()
 
 
 
-
-
 void dictFill(string filename, vector<string> aDictionary)
 {
     ifstream inStream;
     inStream.open(filename);
     string dictword;
-    while (!getline(inStream, dictword).eof())
+    if (!inStream.is_open())
     {
+        cout << "Failed to open " << filename << endl;
+    }
+    while (getline(inStream, dictword))//(!inStream.eof())
+    {
+        cout << dictword;
         aDictionary.push_back(dictword);
     }
     inStream.close();
@@ -286,28 +281,34 @@ int sizeValidator()
 
 void boardSize(Board aBoard)
 {
+    clear();
     cout << "Insert board length" << endl;
     int length = sizeValidator();
-    aBoard.setSizeX(length);
     cout << "Insert board wideness" << endl;
     int width = sizeValidator();
+    if (length * width < 14)
+    {
+        cout << "You need a bigger board" << endl;
+        boardSize(aBoard);
+    }
+    aBoard.setSizeX(length);
     aBoard.setSizeY(width);
 }
 
 
-
-void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> palavras)
- {
-    ofstream outfile("board.txt");
-    for(size_t i=0; i< palavras.size(); i++)
+void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> palavras, string filename)
+{
+    ofstream outfile(filename);
+    for (size_t i = 0; i < palavras.size(); i++)
     {
         outfile << pos[i] << " " << orientacao[i] << " " << palavras[i] << endl;
     }
     outfile.close();
     cout << "Your board is now stored at board.txt" << endl;
 }
-int main()
-{
+
+
+int main(){
     vector<string> dictionary;
     vector<string> words;
     vector<string> orientations;
@@ -317,20 +318,29 @@ int main()
     Word newWord;
     dictFill("WORDS.txt", dictionary);
     boardSize(newboard);
-    while (stop == false)
+    while (!stop)
     {
         newWord.setValue(getWordOrEnd(dictionary, stop));
-        newWord.setIsHorizontal(getOrientation());
-        setPos(newWord);
-        if (wordIsValid(newboard, newWord, words))
+        if (newWord.getValue() == "stopandstore")
         {
-            newboard.insertWord(newWord);
-            saveword(newWord, orientations, words, posicions);
+            stop = true;
         }
         else
         {
-            invalidWord();
+            newboard.printBoard();
+            newWord.setIsHorizontal(getOrientation());
+            setPos(newWord);
+            if (wordIsValid(newboard, newWord, words))
+            {
+                newboard.insertWord(newWord);
+                saveword(newWord, orientations, words, posicions);
+            }
+            else
+            {
+                clear();
+                cout << "The word you entered is invalid in this position, please try a new position or introduce a different. You can also stop." << endl;
+            }
         }
     }
-    exportBoard(orientations, posicions, words);
+    exportBoard(orientations, posicions, words, "board.txt");
 }

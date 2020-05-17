@@ -19,6 +19,12 @@ void clearCin() {
 		cin.ignore(INT_MAX, '\n');
 }
 
+void clearCinStr()
+{
+	clearCin();
+	cout << "Please insert a string" << endl;
+}
+
 /*
  *	Checks if string is in the format "Xx"
  */

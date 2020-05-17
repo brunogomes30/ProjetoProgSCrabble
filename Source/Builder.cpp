@@ -11,8 +11,7 @@
 
 using namespace std;
 
-bool wordIsValid(Board board, Word word, vector<string> wordsVector)
-{
+bool wordIsValid(Board board, Word word, vector<string> wordsVector) {
     //Validate position of the word based on the size
 	int endY = word.getIsHorizontal() ? word.getYPos() : word.getYPos() + word.getValue().length();
 	int endX = word.getIsHorizontal() ? word.getXPos() + word.getValue().length()  : word.getXPos();
@@ -25,8 +24,7 @@ bool wordIsValid(Board board, Word word, vector<string> wordsVector)
 }
 
 
-void setPos(Word &word)
-{
+void setPos(Word &word) {
 	cout << "Insert the position of the first letter in the board(ex: Aa)";
 	string pos;
 	do {
@@ -65,8 +63,7 @@ bool binarySearch(vector<string> vector, string word) {
     return false;
 }
 
-string getWordOrEnd(vector<string> aDictionary, bool endingBool)
-{
+string getWordOrEnd(vector<string> aDictionary, bool endingBool) {
     string aWord;
     cout << "Insert a word you would want to put on the board or type \"stopandstore\" if you want to terminate the board creation, " << endl;
     cin >> aWord;
@@ -112,8 +109,7 @@ void dictFill(string filename, vector<string> &aDictionary) {
 
 
 
-int sizeValidator()
-{
+int sizeValidator() {
     int theinput;
     cin >> theinput;
     while ((cin.fail() || (theinput < 1 || theinput > 20)))
@@ -134,8 +130,7 @@ int sizeValidator()
     return theinput;
 }
 
-void boardSize(Board &board)
-{
+void boardSize(Board &board) {
     clear();
     cout << "Insert board length" << endl;
     int length = sizeValidator();
@@ -150,8 +145,7 @@ void boardSize(Board &board)
 }
 
 
-void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> palavras, string filename)
-{
+void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> palavras, string filename) {
     ofstream outfile(filename);
     for (size_t i = 0; i < palavras.size(); i++)
     {

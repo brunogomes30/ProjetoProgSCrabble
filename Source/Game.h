@@ -106,7 +106,7 @@ private:
 		void endGame();
 
 		/*
-		 * Returns a vector of char that has the letters available to play
+		 * Returns a vector of char that has the letters available to be played
 		 */
 		std::vector<char> getLettersAvailable();
 };

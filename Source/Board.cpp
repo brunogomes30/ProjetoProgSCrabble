@@ -105,6 +105,7 @@ bool Board::insertWord(Word word) {
 		if (word.getIsHorizontal()) x += i;
 		else y += i;
 		
+		if (y < 0 || y >= sizeY || x < 0 || x >= sizeX) return false;
 		
 		if (field[y][x]->getValue() == ' ') {
 			//If it's empty, create a new Letter
@@ -165,7 +166,7 @@ bool Board::readBoardFromFile(string path, int numOfPlayers) {
 		} while (!boardFile.eof());
 		fillMaps();
 	}
-	catch (int e) {
+	catch (...) {
 		return false;
 	}
 
@@ -231,6 +232,7 @@ void Board::setSizeX(int sizeX) {
 vector<vector<Letter*>> Board::getField() {
 	return field;
 }
+
 void Board::setField(vector<vector<Letter*>> field) {
 	this->field = field;
 }

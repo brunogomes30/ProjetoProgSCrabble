@@ -1,3 +1,6 @@
-﻿  Game.cpp
-c:\users\ultra\onedrive\desktop\projeto prog scrabble\projetoprogscrabble\source\game.cpp(177): warning C4018: '<=': signed/unsigned mismatch
+﻿  Board.cpp
+  Game.cpp
+  main.cpp
+  Generating Code...
+c:\users\ultra\onedrive\desktop\projeto prog scrabble\projetoprogscrabble\source\game.cpp(154): warning C4715: 'Game::addRandomLetterToPlayer': not all control paths return a value
   ScrabbleJunior.vcxproj -> C:\Users\ultra\OneDrive\Desktop\Projeto PROG Scrabble\ProjetoProgSCrabble\Debug\ScrabbleJunior.exe

@@ -26,8 +26,7 @@ bool wordIsValid(Board board, Word word)
 }
 
 
-void setPos(Word &word)
-{
+void setPos(Word &word) {
 	cout << "Insert the position of the first letter in the board(ex: Aa)";
 	string pos;
 	do {
@@ -108,8 +107,7 @@ void dictFill(string filename, vector<string> &aDictionary) {
 
 
 
-int sizeValidator()
-{
+int sizeValidator() {
     int theinput;
     cin >> theinput;
     while ((cin.fail() || (theinput < 1 || theinput > 20)))
@@ -130,8 +128,7 @@ int sizeValidator()
     return theinput;
 }
 
-void boardSize(Board &board)
-{
+void boardSize(Board &board) {
     clear();
     cout << "Insert board length" << endl;
     int length = sizeValidator();
@@ -215,8 +212,7 @@ void finishBoard(Board board) {
 	outfile << board.getSizeY() << " X " << board.getSizeX() << endl;
 	vector<Word> words = board.getAllWords();
     for (Word word : words) {
-        outfile << char(word.getYPos() + 'A') << char(word.getXPos() + 'a') << " " << (word.getIsHorizontal() ? 'H' : 'V') << " " << word.getValue() << endl;
-    }
+        outfile << char(word.getYPos() + 'A') << char(word.getXPos() + 'a') << " " << (word.getIsHorizontal() ? 'H' : 'V') << " " << word.getValue() << endl;    }
     outfile.close();
     cout << "Your board is stored at the path:" << endl;
 	cout << path << endl;

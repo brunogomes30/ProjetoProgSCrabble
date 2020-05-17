@@ -19,7 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Source\Board.cpp" />
+    <ClCompile Include="..\Source\Builder.cpp" />
+    <ClCompile Include="..\Source\common.cpp" />
+    <ClCompile Include="..\Source\Game.cpp" />
+    <ClCompile Include="..\Source\Letter.cpp" />
+    <ClCompile Include="..\Source\Player.cpp" />
+    <ClCompile Include="..\Source\Pool.cpp" />
+    <ClCompile Include="..\Source\Word.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Board.h" />
+    <ClInclude Include="..\Source\Colors.h" />
+    <ClInclude Include="..\Source\common.h" />
+    <ClInclude Include="..\Source\Game.h" />
+    <ClInclude Include="..\Source\Letter.h" />
+    <ClInclude Include="..\Source\Player.h" />
+    <ClInclude Include="..\Source\Pool.h" />
+    <ClInclude Include="..\Source\Word.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

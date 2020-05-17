@@ -168,6 +168,7 @@
     <ClInclude Include="..\Source\Letter.h" />
     <ClInclude Include="..\Source\Player.h" />
     <ClInclude Include="..\Source\Pool.h" />
+    <ClInclude Include="..\Source\strings.h" />
     <ClInclude Include="..\Source\Word.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

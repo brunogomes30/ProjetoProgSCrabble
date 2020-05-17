@@ -41,6 +41,9 @@ void Word::calculateIndexToPlay() {
 	}
 }
 
+bool Word::operator==(Word a){
+	return a.getXPos() == getXPos() && a.getYPos() == getYPos() && a.getIsHorizontal() == getIsHorizontal() && a.getValue() == getValue();
+}
 //Getters and setters
 
 bool Word::getIsHorizontal() {

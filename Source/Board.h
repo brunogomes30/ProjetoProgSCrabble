@@ -50,6 +50,20 @@ public:
 			 */
 			bool insertWord(Word word);
 			
+			bool removeWord(Word word);
+
+			/*
+			 * Returns true if board is valid
+			 */
+			bool checksIsValid();
+
+			bool operator ==(Board a);
+
+			/*
+			 * resets the board, filling all the tiles with empty letters
+			 */
+			void reset_board(int sizeY, int sizeX);
+
 			//getters and setters
 			int getSizeY();
 			void setSizeY(int sizeY);
@@ -65,10 +79,7 @@ private:
 			int sizeY;
 			int sizeX;
 
-			/*
-			 * resets the board, filling all the tiles with empty letters
-			 */
-			void reset_board(int sizeY, int sizeX);
+			
 
 			/*
 			 * Updates the maps

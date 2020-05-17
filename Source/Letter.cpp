@@ -19,9 +19,27 @@ Letter::Letter(char value, int yPos, int xPos) {
 }
 
 bool Letter::equals(Letter letter) {
+	bool cond = true;
+	//Compare with the letters
+	for (Word* word1 : includedIn) {
+		bool foundEqual = false;
+		for (Word * word2 : letter.includedIn) {
+			if (word1 == word2) {
+				foundEqual = true;
+				break;
+			}
+		}
+		if (!foundEqual) {
+			cond = false;
+			break;
+		}
+	}
+
 	return letter.value == value && letter.yPos == yPos && letter.xPos == xPos;
 }
 bool Letter::equals(Letter *letter) {
+	
+
 	return letter->value == value && letter->yPos == yPos && letter->xPos == xPos;
 }
 

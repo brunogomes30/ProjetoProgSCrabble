@@ -127,6 +127,7 @@ bool Board::insertWord(Word word) {
 	field[word.getYPos()][word.getXPos()]->setIsAvailable(true);
 	return true;
 }
+
 bool Board::readBoardFromFile(string path) {
 	return readBoardFromFile(path, 0);
 }
@@ -179,6 +180,99 @@ bool Board::readBoardFromFile(string path, int numOfPlayers) {
 	return numOfLetters > numOfPlayers * 7;
 }
 
+bool Board::removeWord(Word word) {
+	int y = word.getYPos();
+	int x = word.getXPos();
+	bool found = false;
+	//Check if word exists
+	for (map<int, Word>::iterator it = words.begin();it != words.end(); it++) {
+		Word w = it->second;
+		if (w == word) {
+			found = true;
+			break;
+		}
+	}
+	if (!found) return false;
+
+	for (Letter* letter : words[word.getYPos()*sizeY + word.getXPos()].getLetters()) {
+
+		vector<Word*> includedIn = letter->getIncludedIn();
+		if (includedIn.size() >= 2) {
+			//Find word
+			int indexOfWord;
+			for (size_t i = 0;i < includedIn.size(); i++) {
+				if (*includedIn[i] == word) {
+					indexOfWord = i;
+					break;
+				}
+			}
+			includedIn.erase(includedIn.begin() + indexOfWord);
+		}
+		else {
+			includedIn.pop_back();
+			letter->setValue(' ');
+		}
+		letter->setIncludedIn(includedIn);
+	}
+	words.erase(word.getYPos()*sizeY + word.getXPos());
+	return true;
+}
+
+bool Board::checksIsValid() {
+	Board newBoard = Board();
+	newBoard.reset_board(sizeY, sizeX);
+	bool isReadingWord = false;
+	//Read horizontal
+	Word newWord;
+	for (int y = 0; y < sizeY; y++) {
+		for (int x = 0;x < sizeX; x++) {
+			if (!isReadingWord && field[y][x]->getValue() != ' ') {
+				isReadingWord = true;
+				string firstLetter = "";
+				firstLetter = firstLetter + field[y][x]->getValue();
+				newWord = Word(firstLetter, y, x, true);
+			}
+			else if (isReadingWord && field[y][x]->getValue() != ' ') {
+				newWord.setValue(newWord.getValue() + field[y][x]->getValue());
+			}
+			else if (isReadingWord && field[y][x]->getValue() == ' ') {
+				isReadingWord = false;
+				if (newWord.getValue().length() > 1) newBoard.insertWord(newWord);
+			}
+		}
+		if (isReadingWord) {
+			isReadingWord = false;
+			if (newWord.getValue().length() > 1) newBoard.insertWord(newWord);
+		}
+	}
+
+	//Read Vertical
+	for (int x = 0;x < sizeX; x++) {
+		for (int y = 0; y < sizeY; y++) {
+			if (!isReadingWord && field[y][x]->getValue() != ' ') {
+				isReadingWord = true;
+				string firstLetter = "";
+				firstLetter = firstLetter + field[y][x]->getValue();
+				newWord = Word(firstLetter, y, x, false);
+			}
+			else if (isReadingWord && field[y][x]->getValue() != ' ') {
+				newWord.setValue(newWord.getValue() + field[y][x]->getValue());
+			}
+			else if(isReadingWord && field[y][x]->getValue() == ' '){
+				isReadingWord = false;
+				if(newWord.getValue().length() > 1) newBoard.insertWord(newWord);
+			}
+		}
+		if (isReadingWord) {
+			isReadingWord = false;
+			if (newWord.getValue().length() > 1) newBoard.insertWord(newWord);
+		}
+	}
+
+	return *this == newBoard;
+	
+}
+
 bool Board::fillTile(int y, int x, Player &player) {
 	//Check if positions are valid
 	if (!(0 <= y && y < sizeY && 0 <= x && x < sizeX))
@@ -213,7 +307,19 @@ bool Board::fillTile(int y, int x, Player &player) {
 	return true;
 }
 
+bool Board::operator==(Board a){
+	if (a.getSizeX() != getSizeX() || a.getSizeY() != getSizeY())
+		return false;
+	bool equal = true;
+	for (int y = 0;y < sizeY;y++) for (int x = 0;x < sizeX; x++) {
+		if (!a.getField()[y][x]->equals(getField()[y][x])) {
+			equal = false;
+			break;
+		}
+	}
 
+	return equal;
+}
 
 //getters and setters
 int Board::getSizeY() {

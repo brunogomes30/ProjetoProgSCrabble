@@ -21,6 +21,8 @@ public:
 		Word();
 		Word(std::string str, int y, int x, bool isHorizontal);
 
+		bool operator ==(Word a);
+
 		//getters and setters
 		bool getIsHorizontal();
 		void setIsHorizontal(bool isHorizontal);

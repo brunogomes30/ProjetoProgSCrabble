@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <string>
 #include "common.h"
 #include "Word.h"
 #include "Board.h"
@@ -15,6 +16,8 @@ bool advancedValidator(vector<string> wordsVector, Board aBoard, Word aword)
     string astr;
     vector<string> newVector;
     int k;
+    vector<string> wordsv2 = wordsVector;
+    wordsv2.push_back(aword.getValue());
     for (int i = 0; i < aBoard.getSizeX(); i++) {
         for (int j = 0; j < aBoard.getSizeY(); j++)
         {
@@ -44,7 +47,6 @@ bool advancedValidator(vector<string> wordsVector, Board aBoard, Word aword)
             newVector.push_back(astr);
         }
     }
-    vector<string> wordsv2 = wordsVector;
     sort(newVector.begin(), newVector.end());
     sort(wordsv2.begin(), wordsv2.end());
     if (newVector != wordsv2)
@@ -96,6 +98,7 @@ void setPos(Word aWord)
 {
     string xpos;
     char ypos;
+    clear();
     cout << "Please input the letter corresponding to the position of the first letter of the desired word in the x axis or that same letter followed by the letter corresponding to the position of the first letter of the desired word in the y axis" << endl;
     cin >> xpos;
     while (cin.fail()|| xpos.size() > 2 || xpos.size() == 0)
@@ -244,7 +247,7 @@ void dictFill(string filename, vector<string> aDictionary)
     {
         cout << "Failed to open " << filename << endl;
     }
-    while (!getline(inStream, dictword).eof())
+    while (getline(inStream, dictword))
     {
         cout << dictword;
         aDictionary.push_back(dictword);
@@ -260,7 +263,11 @@ void dictFill(string filename, vector<string> aDictionary)
 {
     ifstream inStream; 
     inStream.open(filename);
-    if (!inStream.is_open())
+    if (inStream.is_open())
+    {
+        cout << "Sucessfully oppened " << filename << endl;
+    }
+    else
     {
         cout << "Failed to open " << filename << endl;
     }
@@ -293,6 +300,7 @@ int sizeValidator()
 
 void boardSize(Board aBoard)
 {
+    clear();
     cout << "Insert board length" << endl;
     int length = sizeValidator();
     cout << "Insert board wideness" << endl;
@@ -306,7 +314,7 @@ void boardSize(Board aBoard)
     aBoard.setSizeY(width);
 }
 
-/*
+
 void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> palavras, string filename)
 {
     ofstream outfile(filename);
@@ -317,7 +325,7 @@ void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> p
     outfile.close();
     cout << "Your board is now stored at board.txt" << endl;
 }
-*/
+
 
 int main(){
     vector<string> dictionary;
@@ -328,10 +336,10 @@ int main(){
     Board newboard;
     Word newWord;
     dictFill("WORDS.txt", dictionary);
-    dictionary.push_back("test");
-    dictionary.push_back("atest");
-    dictionary.push_back("thetest");
-    dictionary.push_back("ihatetest");
+//    dictionary.push_back("atest");
+//    dictionary.push_back("test");
+//    dictionary.push_back("thetest");
+//    dictionary.push_back("ihatetest");
     boardSize(newboard);
     while (!stop)
     {
@@ -351,6 +359,7 @@ int main(){
             }
             else
             {
+                clear();
                 cout << "The word you entered is invalid in this position, please try a new position or introduce a different. You can also stop." << endl;
             }
         }

@@ -42,7 +42,7 @@ void Word::calculateIndexToPlay() {
 }
 
 bool Word::operator==(Word a){
-	return a.getXPos() == getXPos() && a.getYPos() == getYPos() && a.getIsHorizontal() == getIsHorizontal() && a.getValue() == getValue();
+	return a.getXPos() == this->getXPos() && a.getYPos() == getYPos() && a.getIsHorizontal() == getIsHorizontal() && a.getValue() == getValue();
 }
 //Getters and setters
 

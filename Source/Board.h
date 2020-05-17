@@ -64,6 +64,16 @@ public:
 			 */
 			void reset_board(int sizeY, int sizeX);
 
+			/*
+			 * Returns a word based on its position and direction
+			 */
+			Word findWord(int yPos, int xPos, bool isHorizontal);
+
+			/*
+			 * Returns all words
+			 */
+			std::vector<Word> getAllWords();
+
 			//getters and setters
 			int getSizeY();
 			void setSizeY(int sizeY);

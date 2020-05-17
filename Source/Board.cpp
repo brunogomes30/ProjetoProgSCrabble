@@ -96,8 +96,20 @@ void Board::reset_board(int sizeY, int sizeX) {
 	this->field = field;
 }
 
+Word Board::findWord(int yPos, int xPos, bool isHorizontal) {
+	return words[yPos * sizeY + xPos + isHorizontal * sizeX*sizeY];
+}
+
+vector<Word> Board::getAllWords() {
+	vector<Word> vector;
+	for (map<int, Word>::iterator it = words.begin();it != words.end(); it++) {
+		vector.push_back(it->second);
+	}
+	return vector;
+}
+
 bool Board::insertWord(Word word) {
-	words[word.getYPos() * sizeY + word.getXPos()] = word;
+	words[(word.getYPos() * sizeY + word.getXPos()) + sizeY * sizeX * word.getIsHorizontal()] = word;
 	vector<Letter*> letters;
 	for (size_t i = 0;i < word.getValue().length(); i++) {
 		int y = word.getYPos();
@@ -111,19 +123,19 @@ bool Board::insertWord(Word word) {
 			//If it's empty, create a new Letter
 			lettersMap[y*sizeY + x] = Letter(word.getValue().at(i), y, x);
 			field[y][x] = &lettersMap[y*sizeY + x];
-			words[word.getYPos() * sizeY + word.getXPos()] = word;
+			words[word.getYPos() * sizeY + word.getXPos() + sizeY * sizeX * word.getIsHorizontal()] = word;
 			
-			field[y][x]->addWord(&words[word.getYPos() * sizeY + word.getXPos()]);
+			field[y][x]->addWord(&words[word.getYPos() * sizeY + word.getXPos() + sizeY * sizeX * word.getIsHorizontal()]);
 		}
 		else if (field[y][x]->getValue() == word.getValue().at(i)) {
-			field[y][x]->addWord(&words[word.getYPos() * sizeY + word.getXPos()]);
+			field[y][x]->addWord(&words[word.getYPos() * sizeY + word.getXPos() + sizeY * sizeX * word.getIsHorizontal()]);
 		}
 		else 
 			//It's invalid
 			return false;
 		letters.push_back(&lettersMap[y*sizeY + x]);
 	}
-	words[word.getYPos() * sizeY + word.getXPos()].setLetters(letters);
+	words[word.getYPos() * sizeY + word.getXPos() + sizeY * sizeX * word.getIsHorizontal()].setLetters(letters);
 	field[word.getYPos()][word.getXPos()]->setIsAvailable(true);
 	return true;
 }
@@ -194,7 +206,7 @@ bool Board::removeWord(Word word) {
 	}
 	if (!found) return false;
 
-	for (Letter* letter : words[word.getYPos()*sizeY + word.getXPos()].getLetters()) {
+	for (Letter* letter : words[word.getYPos()*sizeY + word.getXPos() + sizeY * sizeX * word.getIsHorizontal()].getLetters()) {
 
 		vector<Word*> includedIn = letter->getIncludedIn();
 		if (includedIn.size() >= 2) {
@@ -214,7 +226,7 @@ bool Board::removeWord(Word word) {
 		}
 		letter->setIncludedIn(includedIn);
 	}
-	words.erase(word.getYPos()*sizeY + word.getXPos());
+	words.erase(word.getYPos()*sizeY + word.getXPos() + sizeY * sizeX * word.getIsHorizontal());
 	return true;
 }
 

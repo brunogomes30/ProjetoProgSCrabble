@@ -6,12 +6,13 @@
 #include "common.h"
 #include "Word.h"
 #include "Board.h"
-
+#include <filesystem>
 
 
 using namespace std;
+namespace fs = std::experimental::filesystem;
 
-bool wordIsValid(Board board, Word word, vector<string> wordsVector)
+bool wordIsValid(Board board, Word word)
 {
     //Validate position of the word based on the size
 	int endY = word.getIsHorizontal() ? word.getYPos() : word.getYPos() + word.getValue().length();
@@ -65,25 +66,20 @@ bool binarySearch(vector<string> vector, string word) {
     return false;
 }
 
-string getWordOrEnd(vector<string> aDictionary, bool endingBool)
+string getWordOrEnd(vector<string> aDictionary)
 {
-    string aWord;
-    cout << "Insert a word you would want to put on the board or type \"stopandstore\" if you want to terminate the board creation, " << endl;
-    cin >> aWord;
-    if (aWord == "stopandstore") {
-        endingBool = true;
-    }
-    while ((cin.fail() || !binarySearch(aDictionary, aWord)) && !endingBool) {
-        if (cin.fail()) {
-            clearCinStr();
-            cin >> aWord;
-        }
-        if (!binarySearch(aDictionary, aWord)) {
+    string word;
+    cout << "Insert the word:" << endl;
+    cin >> word;
+    while (cin.fail()) {
+		cin >> word;
+        if (!binarySearch(aDictionary, word)) {
             cout << "That is not in our dictionary, please insert another one." << endl;
-            cin >> aWord;
-        }
+            cin >> word;
+		}
+		else break;
     }
-    return aWord;
+    return word;
 }
 
 bool streamlineOrientation(string theorientation) {
@@ -139,7 +135,7 @@ void boardSize(Board &board)
     clear();
     cout << "Insert board length" << endl;
     int length = sizeValidator();
-    cout << "Insert board wideness" << endl;
+    cout << "Insert board width" << endl;
     int width = sizeValidator();
     if (length * width < 14)
     {
@@ -149,48 +145,135 @@ void boardSize(Board &board)
 	board.reset_board(length, width);
 }
 
-
-void exportBoard(vector<string> pos, vector<string> orientacao, vector<string> palavras, string filename)
-{
-    ofstream outfile(filename);
-    for (size_t i = 0; i < palavras.size(); i++)
-    {
-        outfile << pos[i] << " " << orientacao[i] << " " << palavras[i] << endl;
-    }
-    outfile.close();
-    cout << "Your board is now stored at board.txt" << endl;
+string addWord(vector<string> dictionary, Board &board) {
+	cout << "Insert the word you want to add" << endl;
+	Word word = Word();
+	word.setValue(getWordOrEnd(dictionary));
+	setPos(word);
+	if (wordIsValid(board, word)) {
+		board.insertWord(word);
+		return "Added word successfully.";
+	}
+	else 
+		return "Couldn't add word " + word.getValue();
+	
 }
 
+string remove(Board &board) {
+
+	cout << "Insert the word you want to remove" << endl;
+	Word word = Word();
+	string name;
+
+	setPos(word);
+
+	name = board.findWord(word.getYPos(), word.getXPos(), word.getIsHorizontal()).getValue();
+	word.setValue(name);
+
+	if (board.removeWord(word))
+		return "Removed succesfully.";
+	else
+		return "Couldn't remove word " + name + ".";
+}
+
+string moveWord(Board &board) {
+	cout << "Insert the word you want to move" << endl;
+	Word word = Word();
+	string name;
+	
+	setPos(word);
+
+	name = board.findWord(word.getYPos(), word.getXPos(), word.getIsHorizontal()).getValue();
+	word.setValue(name);
+	
+	if (!board.removeWord(word))
+		return "Word doesn't exist.";
+	cout << endl;
+	cout << "Insert the position values to move:" << endl;
+	setPos(word);
+	if (wordIsValid(board, word)) {
+		board.insertWord(word);
+		return "Added word successfully.";
+	}
+	else
+		return "Couldn't add word " + word.getValue();
+}
+void finishBoard(Board board) {
+	cout << "Enter a path with the filename of the board(with .txt extension) or just the filename(Will be saved in the default location)" << endl;
+	string path;
+	getline(cin, path);
+	if (path.find_first_of('\\') != -1) {
+		path += ".txt";
+	}
+	else {
+		string currentPath = fs::current_path().string();
+		currentPath = currentPath.substr(0, currentPath.find_last_of('\\'));
+		path = "\\ScrabbleJunior\\Boards\\" +  currentPath + path + ".txt";
+	}
+    
+	ofstream outfile(path);
+	outfile << board.getSizeY() << " X " << board.getSizeX() << endl;
+	vector<Word> words = board.getAllWords();
+    for (Word word : words) {
+        outfile << char(word.getYPos() + 'A') << char(word.getXPos() + 'a') << " " << (word.getIsHorizontal() ? 'H' : 'V') << " " << word.getValue() << endl;
+    }
+    outfile.close();
+    cout << "Your board is stored at the path:" << endl;
+	cout << path << endl;
+}
+
+string getAction() {
+	string action;
+	cout << "Options:" << endl;
+	cout << "\t 'add' - to add a word." << endl;
+	cout << "\t 'remove' - to remove a word." << endl;
+	cout << "\t 'move' - to move a word." << endl;
+	cout << "\t 'exit' - to exit the application withouth saving." << endl;
+	cout << "\t 'finish' - to finish and save the board." << endl;
+	cout << "Option -> ";
+	cin >> action;
+	clearCin();
+	while (action != "exit" && action != "add" && action != "move" && action != "remove" && action != "finish")
+	{
+		cout << "There is no option " << action << endl;
+		cout << "Option -> ";
+		cin >> action;
+	}
+	return action;
+}
 
 int main(){
     vector<string> dictionary;
-    vector<string> words;
-    vector<string> orientations;
-    vector<string> posicions;
     bool stop = false;
-    Board newboard;
+    Board board;
     Word newWord;
     dictFill("WORDS.txt", dictionary);
-    boardSize(newboard);
+    boardSize(board);
+	string output = "";
     while (!stop) {
-		newboard.printBoard();
-        newWord.setValue(getWordOrEnd(dictionary, stop));
-        if (newWord.getValue() == "stopandstore") {
-            stop = true;
-        }
-        else {
-            setPos(newWord);
-			clear();
-            if (wordIsValid(newboard, newWord, words)) {
-				newboard.insertWord(newWord);
+		clear();
+		cout << output << endl;
+		board.printBoard();
+		string action;
+		action = getAction();
+		if (action == "add") {
+			output = addWord(dictionary, board);
+		}
+		else if (action == "remove") {
+			output = remove(board);
+		}
+		else if (action == "move") {
+			output = moveWord(board);
+		}
+		else if (action == "exit") {
+			stop = true;
+		}
+		else if (action == "finish") {
 
-            }
-            else
-            {
-                clear();
-                cout << "The word you entered is invalid in this position, please try a new position or introduce a different. You can also stop." << endl;
-            }
-        }
+			finishBoard(board);
+			stop = true;
+		}
     }
-    exportBoard(orientations, posicions, words, "board.txt");
+	system("pause");
+    //exportBoard("board.txt");
 }

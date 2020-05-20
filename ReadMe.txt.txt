@@ -3,7 +3,9 @@ Projeto do grupo 3 da turma 3.
 Caros professores,
 
 Todos os objetivos do projeto foram concluidos.
-O projeto permite também escolher qual board dos guardados na pasta (board) usar, introduzir o full path do board, quer para guardar quer para carregar e remover ou mover uma palavra durante a criação do board, entre outas caracteristicas.
+Características adicionais:
+O scrabble junior permite escolher qual board dos guardados na pasta (board) usar ou introduzir o full path de um board a ser usado.
+O board builder possibilita remover ou mover uma palavra durante a criação do board e guardá-lo através de um path ou simplesmente introduzindo o seu nome.
 Estimamos que o Pedro fez 40% do trabalho e o Bruno 60%.
 Estejam à vontade para colocar qualquer dúvida.
 
